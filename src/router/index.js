@@ -2,10 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import List from '../views/List.vue'
+import Me from '../views/Me.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:'/me',
+    name:'me',
+    component:Me
+  },
   {
     path:'/list',
     name:'List',
