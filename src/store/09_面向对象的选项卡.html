@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+            border: 2px dashed #ddd;
+        } 
+        .btns{
+            display: flex;
+            justify-content: space-around;
+        }
+        .btns button{
+            flex: 1;
+            line-height: 40px;
+            height: 40px;
+
+        }
+        .btns button.active{
+            background-color: #b6b6bb;
+        }
+        .content {
+            height: 160px;
+            line-height: 160px;
+            text-align: center;
+            font-size: 50px;
+            display: none;
+        }
+        .content.active{
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btns">
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+        <div class="contents">
+            <div class="content active" style="background-color: antiquewhite;">内容1</div>
+            <div class="content" style="background-color: blueviolet;">内容2</div>
+            <div class="content" style="background-color:  chocolate;">内容3</div>
+        </div>
+    </div>
+    <script>
+        // 选择元素 
+        // 移入元素 
+        // 获取元素下标; 
+        // 找到对应的 content 元素;
+        // 给对应的content元素添加active类名; 
+        // - 元素选择; 
+        // let btns = document.querySelectorAll(".btns button");
+        // let contents = document.querySelectorAll(".content");
+
+        // // console.log(btns , contents);
+        // // - 事件绑定; 
+        // for(let i = 0 ; i < btns.length ; i ++){
+        //     btns[i].onmouseover = function(){
+        //         // 获取了关键数据下标; 
+        //         // - 添加class需要先去清空class;
+        //         for(let k = 0 ; k < btns.length ; k ++){
+        //             btns[k].className = "";
+        //             contents[k].className = "content";
+        //         }
+        //         // 给对应下标的元素添加active类名; 
+        //         btns[i].className = "active";
+        //         contents[i].className += " active";
+        //     }
+        // }
+        // - 面向对象的分析 : OOA 
+        //  - 元素选择功能; (构造函数)
+        //  - 事件绑定功能; (bindEvent)
+        //  - 清除类名;     (clearClass)
+        //  - 添加类名;     (addClass)
+
+        // : OOD 面向对象设计; 
+        // - 构造函数的原则 : 提前准备好所有需要的数据; 
+        // function Tab(){
+        //     // 构造里面提前准备好 btns 还有 contents 数据; 
+
+        // }
+        // // - 原型对象的原则 : 我们把分析好的功能放在原型对象上; 
+        // Tab.prototype.bindEvent = function(){
+
+        // }
+        // // - 清除类名的功能 : 
+        // Tab.prototype.clearClass = function(){
+
+        // }
+        // // - 添加类名功能 : 
+        // Tab.prototype.addClass = function(){
+
+        // }
+        // 设计程序耦合 !; 
+        // 程序间的调用关系我们称之为耦合; 
+        // 构造函数选择数据之后 => bindEvent() 
+        // 事件处理函数面获取到关键数据之后 调用 clearClass 和 addClass功能; 
+
+
+        // OOP : 面向对象编程; 
+        // - 完善刚才划分的每一部分代码; 
+
+        function Tab(){
+            // 构造里面提前准备好 btns 还有 contents 数据; 
+            // 数据如果是被所有的原型方法使用，那么必须放在实例对象上; 
+            this.btns = document.querySelectorAll(".btns button");
+            this.contents = document.querySelectorAll(".content");
+            // 可以在构造函数里直接调用bindEvent; 
+            this.bindEvent();
+        }
+        // - 原型对象的原则 : 我们把分析好的功能放在原型对象上; 
+        Tab.prototype.bindEvent = function(){
+            // 保存指向实例对象的地址; 
+            var tab_instance = this;
+            for(let i = 0 ; i < this.btns.length; i ++){
+                this.btns[i].onmouseover = function(){
+                    // 事件函数里面的 this 指向的是当前发生事件的btn;
+                    // 这里的this没有指向实例对象;
+                    // 如果想要调用原型对象上的方法，那么我们必须得到实例对象; 
+                    // 我们的解决方案是存储一下实例对象的指针; 找到原型方法里面的this(实例对象)然后把这个地址进行保存; 
+                    tab_instance.clearClass();
+                    // console.log(this);
+                    tab_instance.addClass( i );
+                }
+            }
+        }
+        // - 清除类名的功能 : 
+        Tab.prototype.clearClass = function(){
+            for(var i = 0 ; i < this.btns.length ; i ++){
+                this.btns[i].className = "";
+                this.contents[i].className = "content";
+            }
+        }
+        // - 添加类名功能 : 
+        Tab.prototype.addClass = function( index ){
+            // 添加类名功能需要下标; 
+            this.btns[index].className = "active";
+            this.contents[index].className += " active";
+        }
+
+        var tab = new Tab();
+        console.log(tab);
+
+    </script>
+</body>
+</html>
