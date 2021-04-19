@@ -3,10 +3,22 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import List from '../views/List.vue'
 import Me from '../views/Me.vue'
+import Login from '../views/Login.vue'
+import Detail from '../views/Detail.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:'/detail',
+    name:'detail',
+    component:Detail
+  },
+  {
+    path:'/login',
+    name:'login',
+    component:Login
+  },
   {
     path:'/me',
     name:'me',
