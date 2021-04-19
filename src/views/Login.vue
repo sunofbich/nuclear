@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="login">
         <div class="background">
             <img :src="imgSrc" alt="" width="100%" height="100%">
         </div>
@@ -41,7 +41,6 @@ export default {
         }
     },
     methods:{
-
         checkUsername(){
             let username=this.username;
             
@@ -92,7 +91,6 @@ export default {
             }else{
                 
             }
-
         },
         //发送验证码
         sendCode(){
@@ -105,20 +103,20 @@ export default {
 }
 </script>
 <style>
-.background{
+.login .background{
         width: 100%;
         height: 100%;
         z-index: -1;
         position: fixed;
     }
-.inp{
+.login .inp{
     background:transparent;padding-bottom:10px;
 }
-.dl{
+.login .dl{
     margin:0 auto;width:200px;
     margin-bottom: 20px !important;
 }
-.bu{
+.login .bu{
         background-color: gray !important;
         opacity: 0.6;
         
