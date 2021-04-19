@@ -15,10 +15,12 @@
             </div>
             <div v-if="type==2">
             <mt-field style="background:transparent;padding-bottom:10px;color:white" class="inp" type="text" label="用户名" placeholder="请输入用户名" :state="usernameState" v-model="username" @blur.native.capture="checkUsername"></mt-field>
-            <mt-field style="background:transparent;padding-bottom:10px;color:swhite" class="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
+            <mt-field style="background:transparent;padding-bottom:10px;color:white" class="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
             </div>
             <mt-button class="dl" type="primary" size="large" @click="checkForm">快速登录</mt-button>
-            <router-link to="" class="changeBtn">用户名密码登录/短信验证码登录</router-link>
+            <router-link to="" class="changeBtn">用户密码登录</router-link>
+           <router-link to="" class="changeBtn">短信验证码登录</router-link>
+            <router-link to="/register" class="changezc">立即注册</router-link>
         </div>
     </div>
 </template>
@@ -103,6 +105,12 @@ export default {
 }
 </script>
 <style>
+.background{
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        position: fixed;
+    }
 .inp{
     background:transparent;padding-bottom:10px;
 }
@@ -122,5 +130,9 @@ export default {
     .changeBtn{
         color:white;
        
+    }
+    .changezc{
+        color:white;
+        margin-left: 20px;
     }
 </style>
