@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="background">
-            <img :src="imgSrc" alt="" width="100%" height="100%">
+            <img :src="imgSrc" alt="" width="100%" height="100%" >
         </div>
         <div class="loginBox">
             <div class="header">
@@ -22,6 +22,7 @@
     
 </template>
 <script>
+
 export default {
     data(){
 
@@ -78,14 +79,29 @@ export default {
             }
         },
         //发送验证码
-        sendCode(){
+        async sendCode(){
             if(!/^1\d{10}$/.test(this.phone)){
                 this.$messagebox('提示信息','请保证手机号码正确');
                 return;
             }
-        },
-        //验证手机号是否被注册
+            //验证手机号是否被注册
+            let data=await this.$api.personal.phone(this.phone);
+            if(parseInt(data.code)===0){
+               this.$messagebox('提示信息','手机号已经被注册，请选择登录或者忘记密码～'); 
+               return;
 
+            }
+            //通知服务器发送验证码
+            data=await this.$api.personal.code(this.phone);
+            if(parseInt(data.code)===1){
+                this.$messagebox('提示信息','当前服务器繁忙，请稍后再试'); 
+               return;
+            }
+
+        },
+        
+        
+        
         checkForm(){
             if(this.checkUsername()&&this.checkPwd()&&this.checkRepwd()){
                 let url='/register'
@@ -117,7 +133,7 @@ export default {
         width: 100%;
         height: 100%;
         z-index: -1;
-        position: absolute;
+        position: fixed;
     }
     .loginBox{
         padding-top: 100px;
@@ -146,7 +162,7 @@ export default {
        
     }
     .bu{
-        background-color: gray !important;
+        background-color: white !important;
         opacity: 0.6;
         
     }
@@ -154,6 +170,6 @@ export default {
         margin-bottom: 20px !important;
     }
     .hq{
-        color: white;
+        color: black;
     }
 </style>
