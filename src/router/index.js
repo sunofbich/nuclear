@@ -5,10 +5,16 @@ import List from '../views/List.vue'
 import Me from '../views/Me.vue'
 import Login from '../views/Login.vue'
 import Detail from '../views/Detail.vue'
+import Register from '../views/Register.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:'/register',
+    name:'Register',
+    component:Register
+  },
   {
     path:'/detail',
     name:'detail',
