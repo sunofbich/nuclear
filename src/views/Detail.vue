@@ -52,11 +52,35 @@
     </div>
   </div>
 </template>
-<style>
-* {
-  margin: 0;
-  padding: 0;
+
+
+<script>
+export default {
+    data(){
+      return{
+
+      }
+    },
+    mounted(){
+      // 获取新闻id
+      let id = this.$route.query.id;
+      //打印新闻id
+      console.log(id);
+
+      // 声明URL为接口地址
+      let url = `/detail?id=${id}`
+      this.axios.get(url).then(resule=>{
+        //打印从服务器端返回的数据
+        console.log(resule);
+      })
+      
+    }
 }
+</script>
+
+
+
+<style>
 /* 导航样式 */
 .nav {
   margin-top: 10px;
@@ -134,4 +158,6 @@
   margin: 15px 10px 15px 10px;
 }
 </style>
+
+
 

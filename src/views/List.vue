@@ -59,15 +59,32 @@ export default {
       selected: "home",
     };
   },
+  mounted(){
+    //  *******待使用*******
+    //  // 发送http请求，获取UI类别下的第一页数据
+    // this.loadArticles(1, 1, (list)=>{
+    //   // list即是发送请求后 响应中的文章列表
+    //   this.articles = list;
+    // })
+
+    //发送http请求,获取新闻类别的第一页数据
+    this.axios.get('/list').then(resule=>{
+      console.log(resule);
+      // 把服务端返回的类别数组存入data中
+      // result.data.results里存储着类别数组 [{},{},{},{}]
+      this.category = result.data.results;
+    })
+  },
   //监听底部选项卡,用于跳转主页以及me
   watch: {
     selected(newval) {
       if (newval == "home") {
         this.$router.push("/list");
       } else if (newval == "me") {
-        this.$router.push("/me"); 
+        this.$router.push("/me");
       }
-    },
+    }
   },
+
 };
 </script>
