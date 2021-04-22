@@ -5,7 +5,7 @@
         </div>
         <div class="regBox">
             <div class="header">
-                <h1 class="reg">xxx账号注册</h1>
+                <h1 class="reg" style="margin: 0 auto;">xxx账号注册</h1>
             </div>
             <div class="main">
                 <mt-field style="background:transparent;padding-bottom:6px;color: white" type="text" label="用户名" placeholder="请输入用户名" :state="usernameState" v-model="username" @blur.native.capture="checkUsername"></mt-field>
@@ -14,7 +14,7 @@
                 <mt-field style="background:transparent;padding-bottom:6px;color: white" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
                 <mt-field style="background:transparent;padding-bottom:6px;color: white" type="password" label="重复密码" placeholder="请再次输入密码" v-model="repwd" :state="repwdState" @blur.native.capture="checkRepwd"></mt-field>
                 <mt-button  style="margin:0 auto;width:200px;margin-bottom: 6px"   type="primary" size="large" @click="checkForm">免费注册</mt-button>
-                <router-link to="/login" class="changeBtn">已有账号，去登录</router-link>
+                <router-link to="/login" class="changeBtn" style="margin: 0 auto;">已有账号，去登录</router-link>
             </div>
         </div>
         
@@ -173,6 +173,7 @@ export default {
     input{background: transparent !important;}
     .changeBtn{
         color:white;
+        margin: 0 auto;
        
     }
     .btn{
