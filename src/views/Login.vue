@@ -5,7 +5,7 @@
         </div>
         <div class="loginBox">
             <div class="header">
-                <h1 class="log">欢迎登录xxx</h1>
+                <h1 class="log" style="margin: 0 auto;">欢迎登录xxx</h1>
             </div>
             <div v-if="type===1">
             <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="text" label="手机号码" placeholder="请输入您的手机号" :state="phoneState" v-model="phone" ></mt-field>
@@ -18,9 +18,9 @@
             <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
             </div>
             <mt-button class="dl" type="primary" size="large" @click="checkForm">快速登录</mt-button>
-            <span  class="changeBtn1" @click="changeType">{{type===2 ?'短信验证码登录':'用户名密码登录'}}</span>
+            <span  class="changeBtn1" @click="changeType" style="margin: 0 auto;">{{type===2 ?'短信验证码登录':'用户名密码登录'}}</span>
            
-            <router-link to="/register" class="changezc">立即注册</router-link>
+            <router-link to="/register" class="changezc" >立即注册</router-link>
         </div>
     </div>
 </template>
@@ -120,7 +120,7 @@ export default {
         font-size: 24px;
         color:white;
         padding-bottom:10px;
-        margin: 0 auto;
+        
     }
     .loginBox{
         z-index: 1;
