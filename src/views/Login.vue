@@ -1,25 +1,25 @@
 <template>
     <div id="login">
         <div class="backgl">
-            <img :src="imgSrc" alt="" >
+            <img :src="imgSrc" alt="" width="100%" height="100%">
         </div>
         <div class="loginBox">
             <div class="header">
                 <h1 class="log">欢迎登录xxx</h1>
             </div>
-            <div v-if="type==2">
-            <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="text" label="手机号码" placeholder="请输入您的手机号" :state="phoneState" v-model="phone" @blur.native.capture="checkPhone"></mt-field>
-            <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="password" label="短信验证码" placeholder="请输入短信验证码" v-model="message" :state="messageState" @blur.native.capture="checkMessage">
+            <div v-if="type===1">
+            <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="text" label="手机号码" placeholder="请输入您的手机号" :state="phoneState" v-model="phone" ></mt-field>
+            <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="password" label="短信验证码" placeholder="请输入短信验证码" v-model="message" :state="messageState" >
                 <mt-button class="btn1"   size="small" ><router-link class="sendCode1" to="" @click="sendCode">获取验证码</router-link></mt-button>
             </mt-field>
             </div>
-            <div v-if="type==2">
+            <div v-if="type===2">
             <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="text" label="用户名" placeholder="请输入用户名" :state="usernameState" v-model="username" @blur.native.capture="checkUsername"></mt-field>
             <mt-field style="background:transparent;padding-bottom:10px;color:white" id="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
             </div>
             <mt-button class="dl" type="primary" size="large" @click="checkForm">快速登录</mt-button>
-            <router-link to="" class="changeBtn1">用户密码登录</router-link>
-           <router-link to="" class="changeBtn1">短信验证码登录</router-link>
+            <span  class="changeBtn1" @click="changeType">{{type===2 ?'短信验证码登录':'用户名密码登录'}}</span>
+           
             <router-link to="/register" class="changezc">立即注册</router-link>
         </div>
     </div>
@@ -37,10 +37,14 @@ export default {
             phone:"",
             phoneState:"",
             imgSrc:require('../assets/webp.webp'),
-            type:2
+            type: 2
         }
     },
     methods:{
+        //短信验证和用户名密码切换
+        changeType(){
+            this.type=this.type=== 2 ? 1 : 2;
+        },
 
         checkUsername(){
             let username=this.username;
@@ -112,10 +116,11 @@ export default {
         position: fixed;
     }
     .log{
-        padding-top: 100px;
-        font-size: 30px;
+        padding-top: 50px;
+        font-size: 24px;
         color:white;
         padding-bottom:10px;
+        margin: 0 auto;
     }
     .loginBox{
         z-index: 1;
