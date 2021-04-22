@@ -57,21 +57,24 @@
 <script>
 export default {
     data(){
-      return{
-
+      return{                                                     
+        detail:{}
       }
     },
     mounted(){
       // 获取新闻id
-      let id = this.$route.query.id;
+      let id = this.$route.query.news_id;
       //打印新闻id
       console.log(id);
-
       // 声明URL为接口地址
-      let url = `/detail?id=${id}`
-      this.axios.get(url).then(resule=>{
+      let url = `/detail?news_id=${id}`
+      console.log(url)
+      this.axios.get(url).then(results=>{
         //打印从服务器端返回的数据
-        console.log(resule);
+        console.log(results);
+
+        //把服务器返回的文章对象存入data
+        // this.detail = result.data.result
       })
       
     }
