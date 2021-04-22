@@ -5,7 +5,7 @@ import store from './store'
 
 //引入moment.js  时间处理
 import moment from 'moment'
-Vue.prototype.$moment = moment
+Vue.prototype.moment = moment
 
 
 //引入mintUI 
@@ -15,7 +15,8 @@ Vue.use(MintUI)
 
 // 引入axios
 import axios from 'axios'
-Vue.prototype.$axios = axios
+axios.defaults.baseURL = 'http://localhost:3000'
+Vue.prototype.axios = axios
 
 
 Vue.config.productionTip = false
