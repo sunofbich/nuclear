@@ -42,10 +42,9 @@ server.use(cors({
   origin: ['http://82.157.103.228:8080']
 }));
 
-
 //*************************************************************** */
 // 所有文章分类接口
-// 首页
+// 首页  已通过
 server.get('/category', (req, res) => {
   // SQL语句以获取文章分类表的数据
   let sql = 'SELECT category_id,category_name FROM np_category ORDER BY category_id';
@@ -56,17 +55,43 @@ server.get('/category', (req, res) => {
   });
 });
 
+//****************************************************************//
+// //list接口  已通过
+// 获取指定分类下包含文章数据的接口
+server.get('/list', (req, res) => {
+  // 获取客户端传递的cid参数
+  let cid = req.query.category_id;
 
+  // 获取客户端传递的page参数
+  let page = req.query.page? req.query.page : 1;
 
-//list接口
-server.post('/list', (req, res) => {
-  let category_name = req.body.category_name;
-  // SQL语句以获取文章分类表的数据
-  let sql = 'SELECT news_id, title,author_id, image,created_at from np_news where category_id=(select category_id from np_category where category_name=?)';
-  // 执行SQL语句
-  pool.query(sql, [category_name], (error, results) => {
+  // 存储每页显示的记录数
+  let pagesize = 5;
+
+  // 通过公式来计算从第几条记录开始返回
+  let offset = (page - 1) * pagesize;
+
+  // 用于存储获取到的总记录数
+  let rowcount;
+
+  // 获取指定分类下的文章总数
+  let sql = 'SELECT COUNT(news_id) AS count FROM np_news WHERE category_id=?';
+
+  pool.query(sql, [cid], (error, results) => {
     if (error) throw error;
-    res.send({ message: 'ok', code: 200, results: results });
+    // 将获取到总记录数赋给rowcount变量
+    rowcount = results[0].count;
+    /**************************************************/
+    // 根据总记录数和每页显示的记录数来计算总页数
+    let pagecount = Math.ceil(rowcount / pagesize);
+
+    // 查询SQL语句
+    sql = 'SELECT news_id, title,author_id, image,created_at FROM np_news WHERE category_id=? LIMIT ?,?';
+    // 执行SQL
+    pool.query(sql, [cid, offset, pagesize], (error, results) => {
+      if (error) throw error;
+      res.send({ message: 'ok', code: 200, results: results, pagecount: pagecount });
+    });
   });
 });
 
