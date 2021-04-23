@@ -13,7 +13,7 @@
         <!-- 单一文章信息开始 -->
         <div class="articleItem" v-for="(item, i) in articles" :key="i">
           <!-- 文章标题开始 -->
-          <div class="articleItem-header">{{ item.subject }}</div>
+          <div class="articleItem-header">{{ item.title }}</div>
           <!-- 文章标题结束 -->
           <!-- 文章图文信息开始 -->
           <div class="articleItem-wrapper">
@@ -26,7 +26,7 @@
             <!-- 文章图像结束 -->
             <!-- 文章简介开始 -->
             <div class="articleDes">
-              {{ item.description }}
+              {{ item.created_at }}
             </div>
             <!-- 文章简介结束 -->
           </div>
@@ -70,7 +70,7 @@ export default {
   },
   mounted() {
       // 发送http请求，获取当前新闻类别下的第一页数据
-    this.axios.post(`/list?category_name=推荐`).then(result=>{
+    this.axios.get(`/list?category_id=10`).then(result=>{
         console.log(result)
         this.articles = result.data.results
     })
@@ -78,7 +78,7 @@ export default {
     // 发送http请求，获取类别列表
     //也就是头部菜单栏目
     this.axios.get("/category").then((result) => {
-      console.log(result);
+      //console.log(result);
       // 把服务端返回的类别数组存入data中
       // result.data.results里存储着类别数组 [{},{},{},{}]
       this.category = result.data.results;
@@ -98,7 +98,7 @@ export default {
   // 监听顶部导航的更新
   navactive(newval) {
     // newval即是当前选中项的id    类别id    cid
-    this.axios.get(`/list?category_name=${newval}`).then((result) => {
+    this.axios.get(`/list?category_id=${newval}`).then((result) => {
       console.log(result);
       this.articles = result.data.results;
     });
