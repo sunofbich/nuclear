@@ -42,19 +42,21 @@ server.use(cors({
   origin: ['http://82.157.103.228:8080']
 }));
 
+
 //*************************************************************** */
 // 所有文章分类接口
 // 首页
 server.get('/category', (req, res) => {
-  let category_id = req.query.category_id;
   // SQL语句以获取文章分类表的数据
-  let sql = 'SELECT category_name FROM np_category where category_id=?';
+  let sql = 'SELECT category_id,category_name FROM np_category ORDER BY category_id';
   // 执行SQL语句
-  pool.query(sql, [category_id], (error, results) => {
+  pool.query(sql, (error, results) => {
     if (error) throw error;
     res.send({ message: 'ok', code: 200, results: results });
   });
 });
+
+
 
 //list接口
 server.post('/list', (req, res) => {
