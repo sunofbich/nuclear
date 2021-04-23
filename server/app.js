@@ -39,7 +39,7 @@ const cors = require('cors');
 // 使用CORS中间件 
 //需修改
 server.use(cors({
-  origin: ['http://127.0.0.1:8080', 'http://localhost:8080']
+  origin: ['http://82.157.103.228:8080']
 }));
 
 //*************************************************************** */
@@ -55,6 +55,20 @@ server.get('/category', (req, res) => {
     res.send({ message: 'ok', code: 200, results: results });
   });
 });
+
+//list接口
+server.post('/list', (req, res) => {
+  let category_name = req.body.category_name;
+  // SQL语句以获取文章分类表的数据
+  let sql = 'SELECT news_id, title,author_id, image,created_at from np_news where category_id=(select category_id from np_category where category_name=?)';
+  // 执行SQL语句
+  pool.query(sql, [category_name], (error, results) => {
+    if (error) throw error;
+    res.send({ message: 'ok', code: 200, results: results });
+  });
+});
+
+
 // 详情页面
 server.get('/detail', (req, res) => {
   //获取地址栏中的id参数
@@ -67,7 +81,7 @@ server.get('/detail', (req, res) => {
   pool.query(sql, [id], (error, results) => {
     if (error) throw error;
     // 返回数据到客户端
-    res.send({ message: 'ok', code: 200, result: results[0] });
+    res.send({ message: 'ok', code: 200, results: results[0] });
   });
 });
 //author页面接口
