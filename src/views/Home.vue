@@ -1,29 +1,297 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <mt-spinner type="snake"></mt-spinner>
-<mt-spinner type="double-bounce"></mt-spinner>
-<mt-spinner type="triple-bounce"></mt-spinner>
-<mt-spinner type="fading-circle"></mt-spinner>
-
-<!-- 或者接受传入类型的序号 -->
-<mt-spinner :type="0"></mt-spinner>
-<mt-spinner :type="1"></mt-spinner>
-<mt-spinner :type="2"></mt-spinner>
-<mt-spinner :type="3"></mt-spinner>
+  <div style="margin-top: 40px">
+    <div class="container">
+      <!-- 轮播图开始 -->
+      <mt-swipe
+        class="swipe"
+        :style="{ height: h }"
+        :auto="3000"
+        :speed="200"
+        :show-indicators="true"
+        :continuous="true"
+      >
+        <mt-swipe-item>
+          <img src="../assets/home/001.jpg" alt="" />
+        </mt-swipe-item>
+        <mt-swipe-item>
+          <img src="../assets/home/002.jpg" alt="" />
+        </mt-swipe-item>
+        <mt-swipe-item>
+          <img src="../assets/home/003.jpg" alt="" />
+        </mt-swipe-item>
+      </mt-swipe>
+      <!-- 轮播图结束 -->
+      <!-- 选项卡开始 -->
+      <div class="tabs">
+        <div>
+          <img src="../assets/home/s1.png" alt="" slot="icon" /><br />
+          <router-link to="/"> 热点 </router-link>
+        </div>
+        <div>
+          <img src="../assets/home/s7.png" alt="" /><br />
+          要闻
+        </div>
+        <div>
+          <img src="../assets/home/s3.png" alt="" /><br />
+          军事
+        </div>
+        <div>
+          <img src="../assets/home/s4.png" alt="" /><br />
+          社会
+        </div>
+        <div>
+          <img src="../assets/home/s5.png" alt="" /><br />
+          财经
+        </div>
+        <router-link to="/list">
+          <div>
+            <img
+              src="../assets/radiation.png"
+              style="width: 46px; height: 46px; margin-top: 3px"
+            /><br />
+            时政
+          </div>
+        </router-link>
+        <div>
+          <img src="../assets/home/s10.png" alt="" /><br />
+          国际
+        </div>
+        <div>
+          <img src="../assets/home/s8.png" alt="" /><br />
+          科技
+        </div>
+        <div>
+          <img src="../assets/home/s9.png" alt="" /><br />
+          数据
+        </div>
+        <div>
+          <img src="../assets/home/s2.png" alt="" /><br />
+          其他
+        </div>
+      </div>
+      <!-- 选项卡结束 -->
+      <!-- 轮播新闻开始 -->
+      <div class="news">
+        <div>
+          <img src="../assets/home/xinhuashe.jpg" alt="" /><br />
+          新华社调查研...
+        </div>
+        <div>
+          <img src="../assets/home/xijinping.jpg" alt="" /><br />
+          习近平总书记...
+        </div>
+        <div>
+          <img src="../assets/home/juying.jpg" alt="" /><br />
+          聚天下英才汇...
+        </div>
+        <div>
+          <img src="../assets/home/zhineng.jpg" alt="" /><br />
+          智能运输步入...
+        </div>
+      </div>
+      <div class="dian"><img src="../assets/home/dian.png" alt="" /></div>
+      <!-- 轮播新闻结束 -->
+      <!-- 推荐选项开始 -->
+      <div class="recommend">
+        <span style="margin-left: 15px">为你推荐</span>
+        <div class="recommend_right">
+          <div style="background-color: #dc143c"><span>北京</span></div>
+          <div style="background-color: #87cefa"><span>核污染</span></div>
+          <div style="background-color: #cd853f"><span>活动</span></div>
+          <div style="background-color: #3cb371"><span>抗疫情</span></div>
+        </div>
+      </div>
+      <!-- 推荐选项结束 -->
+      <!-- 推荐新闻开始 -->
+      <div class="recommend_news">
+        <div>
+          <div class="recommend_news_pic">
+            <img src="../assets/home/tuijian1.jpg" alt="" />
+          </div>
+          <h3 style="margin-bottom: 3px">习近平出席舰艇交接活动</h3>
+          <h1>
+            <span style="float: left; color: red">2021-4-25</span
+            ><span style="float: right">来源:新华社</span>
+          </h1>
+        </div>
+        <div>
+          <div class="recommend_news_pic">
+            <img src="../assets/home/tuijian2.jpg" alt="" />
+          </div>
+          <h3 style="margin-bottom: 3px">瞰中国｜壮乡涌春潮</h3>
+          <h1>
+            <span style="float: left; color: red">2021-4-26</span
+            ><span style="float: right">来源:今日中国</span>
+          </h1>
+        </div>
+        <div>
+          <div class="recommend_news_pic">
+            <img src="../assets/home/tuijian3.png" alt="" />
+          </div>
+          <h3 style="margin-bottom: 3px">感受中国西北的现代农业</h3>
+          <h1>
+            <span style="float: left; color: red">2021-4-16</span
+            ><span style="float: right">来源:今日中国</span>
+          </h1>
+        </div>
+        <div>
+          <div class="recommend_news_pic">
+            <img src="../assets/home/tuijian4.jpg" alt="" />
+          </div>
+          <h3 style="margin-bottom: 3px">美国议员挑衅原则是在玩火</h3>
+          <h1>
+            <span style="float: left; color: red">2021-4-24</span
+            ><span style="float: right">来源:央视客户端</span>
+          </h1>
+        </div>
+      </div>
+      <!-- 推荐新闻结束 -->
+      <!-- 底部选项卡开始 -->
+      <mt-tabbar v-model="selected" fixed>
+              <mt-tab-item id="home">
+                  <img
+            v-if="selected == 'home'"
+            src="../assets/home/main_1.png"
+            slot="icon"
+          />
+                  <img v-else src="../assets/home/main_0.png" slot="icon" />
+                </mt-tab-item
+        >
+              <mt-tab-item id="me">
+                  <img
+            v-if="selected == 'me'"
+            src="../assets/home/me_1.png"
+            slot="icon"
+          />
+                  <img v-else src="../assets/home/me_0.png" slot="icon" />
+                </mt-tab-item
+        >
+            </mt-tabbar
+      >
+      <!-- 底部选项卡结束 -->
+    </div>
   </div>
-  
 </template>
-
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      h: "200px",
+      selected: "",
+    };
+  },
+  methods: {
+    initSwipe() {
+      let picwidth = 1242;
+      let picheight = 698;
+      // 屏幕宽
+      let screenwidth = window.screen.width;
+      let height = Math.floor((picheight * screenwidth) / picwidth) + "px";
+      // 把计算得到的height，赋值给data中的变量，动态更新轮播图
+      this.h = height;
+    },
+  },
+  mounted() {
+    this.initSwipe();
+  },
+  watch: {
+    selected(newval) {
+      if (newval == "home") {
+        this.$router.push("/list");
+      } else if (newval == "me") {
+        this.$router.push("/me");
+      }
+    },
+  },
+};
 </script>
+<style scoped>
+.swipe img {
+  width: 100%;
+}
+.container {
+  width: 100%;
+  font-size: 10px;
+}
+.tabs div {
+  width: 20%;
+  text-align: center;
+  float: left;
+  background-color: white;
+}
+.tabs img {
+  width: 50px;
+  height: 50px;
+}
+.news {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+.news div {
+  width: 25%;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+}
+.news img {
+  width: 83.75px;
+  height: 51.16px;
+  border-radius: 5px;
+}
+
+.recommend {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  line-height: 50px;
+  border-bottom: 1px solid #dcdcdc;
+  border-top: 8px solid #f5f5f5;
+}
+.recommend span {
+  font-size: 20px;
+}
+.recommend_right {
+  float: right;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+}
+.recommend_right div {
+  margin-left: 5px;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 15%;
+}
+.recommend_right span {
+  font-size: 10px;
+  color: white;
+  justify-content: space-between;
+}
+
+.recommend_news_pic img {
+  width: 172.5px;
+  height: 97.08px;
+  border-radius: 8px;
+}
+.dian {
+  text-align: center;
+  margin-bottom: 5px;
+}
+.recommend_news {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 4px;
+}
+.recommend_news div {
+  margin-top: 3px;
+}
+</style>
