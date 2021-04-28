@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" style="margin-top:40px">
     <!-- 导航 -->
     <mt-navbar style="top: 0" v-model="navactive" fixed>
       <mt-tab-item
@@ -129,8 +129,6 @@ export default {
 
 
 <style>
-.list{
-margin-top:40px}
 .list .articleItem {
   padding: 10px 0;
   margin: 0 10px;
