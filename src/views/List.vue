@@ -29,7 +29,36 @@
             <div class="articleItem-wrapper">
               <!-- 文章图像开始  -->
               <div class="articleImg">
-                <!-- <img :src="`../assets/articles/${item.image}`" /> -->
+                <img :src="`${item.image}`.slice(1, -1)" />
+                <!-- <img src="../assets/articles/4-methods-to-make-competitive-interactive-works-b.jpg" /> -->
+                <!-- 图片没有   <img v-if="item.image" :src="item.image" /> -->
+              </div>
+              <!-- 文章图像结束 -->
+              <!-- 文章点赞数量开始 -->
+              <div class="articleDes">
+                {{ item.created_at }}
+              </div>
+              <div>
+
+              </div>
+              <!-- 文章简介结束 -->
+            </div>
+          </router-link>
+          <!-- 文章图文信息结束 -->
+        </div>
+
+
+        <!-- 单一文章信息开始 -->
+        <div class="articleItem" v-for="(item, i) in articles" :key="i">
+          <router-link :to="`/detail?news_id=${item.news_id}`">
+            <!-- 文章标题开始 -->
+            <div class="articleItem-header">{{ item.title }}</div>
+            <!-- 文章标题结束 -->
+            <!-- 文章图文信息开始 -->
+            <div class="articleItem-wrapper">
+              <!-- 文章图像开始  -->
+              <div class="articleImg">
+                <img :src="`${item.image}`.slice(1, -1)" />
                 <!-- <img src="../assets/articles/4-methods-to-make-competitive-interactive-works-b.jpg" /> -->
                 <!-- 图片没有   <img v-if="item.image" :src="item.image" /> -->
               </div>
@@ -38,15 +67,19 @@
               <div class="articleDes">
                 {{ item.created_at }}
               </div>
+              <div>
+
+              </div>
               <!-- 文章简介结束 -->
             </div>
           </router-link>
           <!-- 文章图文信息结束 -->
         </div>
-
         <!-- 底线 -->
-        <div v-if="reachBottom" class="rb">我是有底线的</div>
+        <div v-if="reachBottom" class="rb"><span style="margin:8px 0 3px 0">京ICP备2021014196号-1</span>
+</div>
       </mt-tab-container-item>
+      
     </mt-tab-container>
   </div>
 </template>
@@ -99,7 +132,7 @@ export default {
   mounted() {
     // 发送http请求，获取当前新闻类别下的第一页数据
     this.axios.get(`/list?category_id=10`).then((result) => {
-      // console.log(result);
+       console.log(result);
       this.articles = result.data.results;
     });
     // 发送http请求，获取类别列表
@@ -165,5 +198,8 @@ margin-top:40px}
   line-height: 21px;
   letter-spacing: normal;
   color: #444;
+}
+.rb{
+  text-align: center;
 }
 </style>

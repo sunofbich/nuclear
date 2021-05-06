@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 40px">
+  <div style="margin: 40px 0 43px 0">
     <div class="container">
       <!-- 轮播图开始 -->
       <mt-swipe
@@ -22,7 +22,7 @@
       </mt-swipe>
       <!-- 轮播图结束 -->
       <!-- 选项卡开始 -->
-      <div class="tabs">
+      <div class="tabs" style="margin:3px 0 3px 0">
         <div>
           <img src="../assets/home/s1.png" alt="" slot="icon" /><br />
           <router-link to="/"> 热点 </router-link>
@@ -144,7 +144,8 @@
             ><span style="float: right">来源:央视客户端</span>
           </h1>
         </div>
-      </div>
+        <span style="margin:8px 0 3px 0">京ICP备2021014196号-1</span>
+      </div>  
       <!-- 推荐新闻结束 -->
       
     </div>

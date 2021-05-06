@@ -6,7 +6,6 @@
         <div class="loginBox">
             <div class="header">
                 <div><img src="../assets/radiation.png" alt=""></div>
-                <h1 class="log">欢迎登录xxx</h1>
             </div>
             <!-- <div v-if="type==2"> -->
             <!-- 手机号 -->
@@ -17,15 +16,34 @@
             <!-- </mt-field> -->
             <!-- </div> -->
             <!-- 用户名 -->
-            <div v-if="type==2">
-            <mt-field style="background:transparent;padding-bottom:10px;color:black" id="inp" type="text" label="用户名" placeholder="请输入用户名" :state="usernameState" v-model="username" @blur.native.capture="checkUsername"></mt-field>
-            <!-- 密码 -->
-            <mt-field style="background:transparent;padding-bottom:10px;color:black" id="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
-            </div>
-            <mt-button class="dl" type="primary" size="large" @click="checkForm">快速登录</mt-button>
+            <div v-if="type==2" class="log">
+                <mt-field 
+                style="background:transparent;
+                padding-bottom:10px;
+                color:black" id="inp" 
+                type="text" label="用户名" 
+                placeholder="请输入用户名" 
+                :state="usernameState" 
+                v-model="username" @blur.native.capture="checkUsername"></mt-field>
+                <!-- 密码 -->
+                <mt-field 
+                style="background:transparent;
+                padding-bottom:10px;
+                color:black" 
+                id="inp" 
+                type="password" 
+                label="密码" 
+                placeholder="请输入密码" 
+                v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
+                </div>
+                <mt-button 
+                id="loginbtn"
+                class="dl" 
+                type="primary" 
+                size="large" @click="checkForm">快速登录</mt-button>
             <div class="bottombar">
                 <!-- <router-link to="" class="changeBtn1" style="color:black">用户密码登录</router-link> -->
-                <router-link to="/SMSLogin" class="changeBtn1" style="color:black">短信验证码登录</router-link>
+                <router-link to="/SMSLogin" class="changeBtn1" style="color:black">短信验证码注册/登录</router-link>
                 <router-link to="/register" class="changezc" style="color:red">立即注册</router-link>
             </div>
         </div>
@@ -83,8 +101,8 @@ export default {
                     if(result.data.code==200){
                         this.$toast({
                             message:'登录成功',
-                            position:'bottom',
-                            duration:2000
+                            position:'center',
+                            duration:1000
                         })
                         let user = result.data.result;
                         this.$store.commit('updateLoginState',user);
@@ -102,16 +120,19 @@ export default {
 
         },
         //发送验证码
-        sendCode(){
-            if(!/^1\d{10}$/.test(this.phone)){
-                this.$messagebox('提示信息','请保证手机号码正确');
-                return;
-            }
-        },
+        // sendCode(){
+        //     if(!/^1\d{10}$/.test(this.phone)){
+        //         this.$messagebox('提示信息','请保证手机号码正确');
+        //         return;
+        //     }
+        // },
     }
 }
 </script>
 <style >
+    .header{
+        margin-top:50px;
+    }
     .header>div{
         width: 110px;
         height: 110px;
@@ -119,6 +140,7 @@ export default {
         opacity: 0.3;
     }
     .header>div>img{
+        margin-top: 50px;
         width: 100%;
         height: 100%;
         border: 1px solid gray;
@@ -135,12 +157,13 @@ export default {
         width: 100%;
         height: 100%;
         opacity: 0.2;
+        position: fixed;
     }
-    .log{
-        padding-top: 20px;
+   .loginBox .log{
+        padding-top: 135px;
         font-size: 30px;
         color:black;
-        padding-bottom:50px;
+        padding-bottom:30px;
     }
     .loginBox{
         z-index: 1;
@@ -149,8 +172,8 @@ export default {
         opacity: 0.6;
         
     }
-    .dl{
-        margin-bottom: 20px !important;
+    #loginbtn.dl{
+        margin-bottom: 50px !important;
         margin:0 auto;width:200px !important;
     }
     .changeBtn1{

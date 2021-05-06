@@ -4,8 +4,13 @@
       <!-- 详情页 固定布局页头 -->
       <div class="header-nav"></div>
       <!-- 头部图片位置 暂时用div代替-->
-      <div style="width：100%;height:160px; background-color:red;"></div>
-      <!-- <img :src="detail.image" style="width：100%;height:160px;" alt=""> -->
+      <div class="header-img" >
+        <img :src="this.detail.image.slice(1, -1)" alt="">
+        <!-- <img :src="detail.image" alt=""> -->
+        
+        
+      </div>
+        
     </header>
     <!-- 头部结束 -->
     <!--正文开始  -->
@@ -19,7 +24,10 @@
         <span class="nav_s" >{{detail.created_at}}</span>
         <!-- <span class="nav_a">新浪/刚刚</span> -->
        
-        <router-link to="#" class="nav_a">已订阅</router-link> <router-link to="#" class="nav_a">赞{{detail.dz_number}}</router-link>
+        <router-link to="#" class="nav_a">已订阅</router-link> 
+      
+        <button class="dz-button" @click='zan' >赞{{detail.dz_number}}</button>
+
       </div>
       <!-- 导航结束 -->
       <!-- 正文标题 -->
@@ -46,7 +54,8 @@
               <tr  class="user-top clearfix">
                  <!-- 用户头像 -->
                 <td rowspan="2" class="user-top-image">
-                  <img src="../assets/logo.png" alt>
+                  <!-- <img src="../assets/logo.png" alt> -->
+                  {{author.avator}}
                 </td>
                 <!-- 用户名 -->
                 <td class="user-right  dz">
@@ -54,15 +63,11 @@
                 </td>
                 <!-- 点赞 -->
                 <td class="user-right dz">
-                 <router-link to="#" class="dz_a dz_right">
-                   <span>点赞</span>
-                 </router-link>
+                
                 </td>
                 <!-- 点赞数量 -->
-                <td class="user-right ">
-                  <router-link to="#" class="dz_a dz_left">
-                  <span>{{detail.dz_number}}</span>
-                  </router-link>
+                <td class="user-right dz">
+                    <button class="dz-button comment-dz" @click='zan' >赞{{detail.dz_number}}</button>
                 </td>
               </tr>
               <tr>
@@ -100,48 +105,93 @@ export default {
       // 详情
       detail: {},
       // 评论
-      comment: []
+      comment: [],
+      flg:true,
+      author:{}
     };
   },
   mounted() {
     // 获取新闻id
     let id = this.$route.query.news_id;
     //打印新闻id
-    console.log(id);
+    //console.log(id);
     // 声明URL为接口地址
     let url = `/detail?news_id=${id}`;
-    console.log(url);
+    //console.log(url);
     this.axios.get(url).then(result => {
       //打印从服务器端返回的数据
-      console.log(result);
+     // console.log(result);
       //把服务器返回的文章对象存入data
       this.detail = result.data.results;
+      //header头像
+      
+      // this.detail.image = require(`${this.detail.image}`)
       // 处理一下时间  通过毫秒值时间戳  获取moment对象
-      let m = this.moment(detail.created_at);
-      console.log(`11111${m}`)
+      // let m = this.moment(detail.created_at);
+      // console.log(`11111${m}`)
       // 新增属性create
       // dStr用于保存格式化后的时间字符串;
-      this.detail.createdStr = m.format("YYYY年MM月DD日");
+      // this.detail.createdStr = m.format("YYYY年MM月DD日");
       // moment(m,'MMMM DD YYYY');
       
     });
     url = `/comment?news_id=${id}`;
     this.axios.get(url).then(result => {
       //打印从服务器端返回的数据
-      console.log(result);
+      //console.log(result);
       //把服务器返回的文章对象存入data
       this.comment = result.data.results;  
+      //评论头像
+     //this.comment.avatar = require(`${this.article.avatar}`)
+    
     });
+    //获取作者信息
+      url = `/author?news_id=${id}`;
+    this.axios.get(url).then(result => {
+      //打印从服务器端返回的数据
+     // console.log(result);
+      //把服务器返回的文章对象存入data
+      this.author = result.data.author;  
+      //评论头像
+     //this.author.avatar = require(`${this.author.avatar}`)
+    
+    });
+    //获取点赞
     url = `/?news_id=${id}`;
     this.axios.get(url).then(result => {
       //打印从服务器端返回的数据
-      console.log(result);
+      //console.log(result);
       //把服务器返回的文章对象存入data
       this.comment = result.data.results;
-      
+ 
     });
+  
+  },
+  methods: {
+      //点赞
+    zan: function(){
+      if(this.flg){
+        let num = this.detail.dz_number++;
+        let url = '/dz?news_id=${id}';
+        this.axios.post(url,num).then(result=>{
+          //console.log(result);
+          if(result.data.code==200){
+            this.$toast({
+              message:'成功'
+            })
+          }
+        })
+
+      }else{
+        this.detail.dz_number--;
+        this.flg = true;
+      }
+    },
+   
   }
-};
+  
+}
+
 </script>
 
 <style scoped>
@@ -149,6 +199,10 @@ export default {
 header{
   /* 设置上边距留出导航栏 */
   margin-top: 40px;
+}
+.header-img img{
+  width: 100%;
+  height: 160px;
 }
 .nav {
   margin-top: 10px;
@@ -199,6 +253,23 @@ header{
   font-size: 24px;
   font-weight: bolder;
 }
+/* 点赞按钮的样式 */
+.dz-button{
+  width: 70px;
+  height: 22px;
+  line-height: 22px;
+  background-color: #fff;
+  float: right;
+  /* box-shadow: #fff; */
+  color: orange;
+  border: 1px solid orange;
+  margin-right: 5px;
+  padding-bottom:2px; 
+}
+.comment-dz{
+  color: #999;
+  border: 1px solid #999;
+}
 /* 内容 */
 
 .content /deep/ p {
@@ -208,7 +279,7 @@ header{
   text-indent: 32px;
 }
 .content /deep/ img {
-  width: 80%;
+  width: 90%;
   height: 160px;
   margin: 0 auto;
 }
@@ -253,25 +324,11 @@ header{
 /**********************************************/
 
 /* 点赞部分 */
-.dz_left span{
-  float: left;
-}
-.dz_right span{
-  float: right;
-}
 table{
   width: 80%;
 }
 .dz{
-  width: 38%;
-}
-.dz_a {
-  text-decoration: none;
-  color: orange;
-  height: 20px;
-  width: 70px;
-  text-align: center;
-  line-height: 20px;
+  width: 28%;
 }
 </style>
 

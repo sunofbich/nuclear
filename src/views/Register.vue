@@ -1,20 +1,63 @@
 <template>
     <div id="register">
         <div class="backgr">
-            <img :src="imgSrc" alt="" width="100%" height="100%" >
+            <img :src="imgSrc" alt="" class="bgimg">
         </div>
         <div class="regBox">
             <div class="header">
-                <h1 class="reg" style="margin: 0 auto;">xxx账号注册</h1>
+               <div><img src="../assets/radiation.png" alt=""></div>
             </div>
             <div class="main">
-                <mt-field style="background:transparent;padding-bottom:6px;color: white" type="text" label="用户名" placeholder="请输入用户名" :state="usernameState" v-model="username" @blur.native.capture="checkUsername"></mt-field>
-                <mt-field style="background:transparent;padding-bottom:6px;color: white" type="text" label="手机号码" placeholder="请输入手机号"  v-model="phone" ></mt-field>
-                <mt-field style="background:transparent;padding-bottom:6px;color: white" type="text" label="短信验证码" placeholder="请输入短信验证码"  v-model="message" ><mt-button class="btn"   size="small" ><router-link class="sendCode" to="" >获取验证码</router-link></mt-button></mt-field>
-                <mt-field style="background:transparent;padding-bottom:6px;color: white" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field>
-                <mt-field style="background:transparent;padding-bottom:6px;color: white" type="password" label="重复密码" placeholder="请再次输入密码" v-model="repwd" :state="repwdState" @blur.native.capture="checkRepwd"></mt-field>
-                <mt-button  style="margin:0 auto;width:200px;margin-bottom: 6px"   type="primary" size="large" @click="checkForm">免费注册</mt-button>
-                <router-link to="/login" class="changeBtn" style="margin: 0 auto;">已有账号，去登录</router-link>
+                <mt-field 
+                    style="background:transparent;
+                    padding-bottom:6px;
+                    color: black" 
+                    type="text" 
+                    label="用户名" 
+                    placeholder="请输入用户名" 
+                    :state="usernameState" 
+                    v-model="username" @blur.native.capture="checkUsername">
+                </mt-field>
+                <mt-field 
+                    style="background:transparent;
+                    padding-bottom:6px;
+                    color: black" 
+                    type="text" 
+                    label="手机号码"
+                    placeholder="请输入手机号"  
+                    v-model="phone" >
+                </mt-field>
+                <!-- <mt-field 
+                style="background:transparent;
+                padding-bottom:6px;
+                color: black" 
+                type="text" 
+                label="短信验证码" 
+                placeholder="请输入短信验证码"  
+                v-model="message" >
+                <mt-button class="btn"   size="small" ><router-link class="sendCode" to="" >获取验证码</router-link></mt-button>
+                </mt-field> -->
+                <mt-field 
+                    style="background:transparent;
+                    padding-bottom:6px;color: black" 
+                    type="password" label="密码" 
+                    placeholder="请输入密码" v-model="pwd" 
+                    :state="pwdState" @blur.native.capture="checkPwd">
+                </mt-field>
+                <mt-field 
+                    style="background:transparent;
+                    padding-bottom:6px;color: black" 
+                    type="password" label="重复密码" 
+                    placeholder="请再次输入密码" 
+                    v-model="repwd" 
+                    :state="repwdState" @blur.native.capture="checkRepwd">
+                </mt-field>
+                <mt-button  
+                    style="margin:0 auto;width:200px;margin-bottom: 30px" 
+                    type="primary" size="large" @click="checkForm">免费注册
+                </mt-button>
+                <div
+                style="text-align:center"><router-link to="/login" class="changeBtn" style="width:100%">已有账号，去登录</router-link></div>
             </div>
         </div>
         
@@ -36,7 +79,7 @@ export default {
             phone:"",
             message:"",
             
-            imgSrc:require('../assets/webp.webp'),
+            imgSrc:require('../assets/login.png'),
             //倒计时
             isRun:false,
             runTime:30
@@ -48,7 +91,7 @@ export default {
         checkUsername(){
             let username=this.username;
             
-            let reg=/^\w{6,12}$/;
+            let reg=/^[\u4E00-\u9FA5 \w]{2,12}$/;
             if(reg.test(username)){
                 this.usernameState='success';
                 return true;
@@ -143,46 +186,69 @@ export default {
 }
 </script>
 <style >
+     .header{
+        margin-top:50px;
+    }
+    .header>div{
+        width: 110px;
+        height: 110px;
+        margin: 10px auto;
+        opacity: 0.3;
+    }
+    .header>div>img{
+        margin-top: 50px;
+        width: 100%;
+        height: 100%;
+        border: 1px solid gray;
+        border-radius: 50%;
+        box-shadow: 0 0 10px 5px rgb(76, 74, 74);
+    }
     .backgr{
         width: 100%;
         height: 100%;
         z-index: -1;
         position: fixed;
     }
+    .bgimg{
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        position: fixed;
+    }
+   .regBox .main{
+        padding-top: 135px;
+        color:black;
+        padding-bottom:30px;
+    }
     .regBox{
-        padding-top: 50px;
         z-index: 1;
     }
-    
-    .reg{
-        font-size: 24px;
-        color:white;
-        padding-bottom:5px;
-        margin: 0 auto;
-    }
-    .mint-field-core{
-        
-        
-        opacity: 0.8;
-        
-    }
-    input::placeholder{
-    color:white !important;
-   
-    }
-    input{background: transparent !important;}
-    .changeBtn{
-        color:white;
-        margin: 0 auto;
-       
-    }
-    .btn{
-       
+    .btn1{
         opacity: 0.6;
         
     }
-    
-    .sendCode{
+    #loginbtn.dl{
+        margin-bottom: 50px !important;
+        margin:0 auto;width:200px !important;
+    }
+    .changezc{
+        color:white;
+        margin-left: 20px;
+    }
+    .changeBtn{
+        color: red;
+
+    }
+    /* input::placeholder{
+    color:black !important;
+    } */
+
+    input{background: transparent !important;}
+    .sendCode1{
         color: black;
+    }
+    .bottombar{
+        display: flex;
+        justify-content: space-around;
     }
 </style>
