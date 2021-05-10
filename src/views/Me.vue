@@ -9,8 +9,10 @@
         </div>
 
         <div class="user_btn">
-          <span v-if="this.$store.state.islogin == 0">立即登录</span>
+          
+          <span v-if="this.$store.state.islogin == 0" ><router-link  to="/login" style="color:white" >立即登录</router-link></span>
           <span v-else>{{ this.$store.state.user.user_name }}</span>
+          
         </div>
       </div>
     </div>

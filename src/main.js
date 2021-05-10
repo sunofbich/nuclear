@@ -1,4 +1,4 @@
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -15,7 +15,8 @@ Vue.use(MintUI)
 
 // 引入axios
 import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://82.157.103.228:3000'
+// axios.defaults.baseURL = 'http://npfive.cn:3000'
 Vue.prototype.axios = axios
 
 

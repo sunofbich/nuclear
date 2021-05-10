@@ -3,7 +3,7 @@
     <mt-header fixed title="核污染专题栏目" class="important-header">
         <mt-button icon="back" @click="back" slot="left" ></mt-button>
         <router-link v-if="this.$store.state.islogin==0" to="/login" slot="right">登录/注册</router-link>
-        <router-link v-else slot="right" to="/me">{{this.$store.state.user.user_name}}<span @click="logout">注销</span></router-link>
+        <router-link v-else slot="right" to="/me">{{this.$store.state.user.user_name}}<span>注销</span></router-link>
     </mt-header>
 
     <!-- 路由内容 -->
@@ -44,9 +44,6 @@ data(){
 	}
 },
   methods: {
-	logout(){
-	this.$store.state.islogin=0
-	},
 	back(){
         this.$router.push(history.go(-1));
     }

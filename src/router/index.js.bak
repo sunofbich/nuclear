@@ -6,17 +6,10 @@ import Me from '../views/Me.vue'
 import Login from '../views/Login.vue'
 import Detail from '../views/Detail.vue'
 import Register from '../views/Register.vue'
-import SMSlogin from '../views/SMSlogin.vue'
-
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path:'/smslogin',
-    name:'SMSlogin',
-    component:SMSlogin
-  },
   {
     path:'/register',
     name:'Register',

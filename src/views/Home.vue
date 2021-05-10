@@ -143,8 +143,9 @@
             <span style="float: left; color: red">2021-4-24</span
             ><span style="float: right">来源:央视客户端</span>
           </h1>
+          
         </div>
-        <span style="margin:8px 0 3px 0">京ICP备2021014196号-1</span>
+        <span style="margin:8px 0 3px 0"><a href="http://www.beian.gov.cn/">京ICP备2021014196号-1</a></span>
       </div>  
       <!-- 推荐新闻结束 -->
       

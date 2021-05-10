@@ -5,7 +5,7 @@
       <div class="header-nav"></div>
       <!-- 头部图片位置 暂时用div代替-->
       <div class="header-img" >
-        <img :src="this.detail.image.slice(1, -1)" alt="">
+        <img :src="this.detail.image" alt="">
         <!-- <img :src="detail.image" alt=""> -->
         
         
@@ -55,7 +55,7 @@
                  <!-- 用户头像 -->
                 <td rowspan="2" class="user-top-image">
                   <!-- <img src="../assets/logo.png" alt> -->
-                  {{author.avator}}
+                  <!-- {{author.avatar}} -->
                 </td>
                 <!-- 用户名 -->
                 <td class="user-right  dz">
@@ -123,6 +123,9 @@ export default {
      // console.log(result);
       //把服务器返回的文章对象存入data
       this.detail = result.data.results;
+      let test=result.data.results;
+      // console.log(test.image.slice(1,-1));
+      this.detail.image=test.image.slice(1,-1);
       //header头像
       
       // this.detail.image = require(`${this.detail.image}`)

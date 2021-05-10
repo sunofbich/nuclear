@@ -49,7 +49,7 @@
 
 
         <!-- 单一文章信息开始 -->
-        <div class="articleItem" v-for="(item, i) in articles" :key="i">
+        <div class="articleItem" v-for="(item, i) in articles" :key="i+10">
           <router-link :to="`/detail?news_id=${item.news_id}`">
             <!-- 文章标题开始 -->
             <div class="articleItem-header">{{ item.title }}</div>

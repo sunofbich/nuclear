@@ -18,8 +18,8 @@
           placeholder="请输入您的手机号"
           :state="phoneState"
           v-model="phone"
-          @blur.native.capture="checkPhone"
         ></mt-field>
+        <!--  @blur.native.capture="checkPhone"  my-field里面的 -->
         <!-- 短信验证 -->
         <mt-field
           style="background: transparent; padding-bottom: 10px; color: black"
@@ -29,12 +29,15 @@
           placeholder="请输入短信验证码"
           v-model="message"
           :state="messageState"
-          @blur.native.capture="checkMessage"
         >
-          <mt-button class="btn1" size="small"
+          <!-- @blur.native.capture="checkMessage"  上面的 -->
+          <!-- <mt-button class="btn1" size="small"
             ><router-link class="sendCode1" to="" @click="sendCode"
               >获取验证码</router-link
             ></mt-button
+          > -->
+          <mt-button class="btn1 sendCode1" size="small" @click.native="sendCode"
+            >获取验证码</mt-button
           >
         </mt-field>
       </div>
@@ -44,7 +47,7 @@
         <!-- 密码 -->
         <!-- <mt-field style="background:transparent;padding-bottom:10px;color:black" id="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field> -->
       </div>
-      <mt-button class="dl" type="primary" size="large">一键注册</mt-button>
+      <mt-button @click="registerSMS" class="dl" type="primary" size="large">注册并登陆</mt-button>
       <div class="bottombar">
         <!-- <router-link to="" class="changeBtn1" style="color:black">用户密码登录</router-link> -->
         <router-link to="/login" class="changeBtn1" style="color: black"
@@ -128,12 +131,23 @@ export default {
     // },
     //发送验证码
     sendCode() {
-      if (!/^1\d{10}$/.test(this.phone)) {
-        this.$messagebox("提示信息", "请保证手机号码正确");
-        return;
-      }
+      // let rul = 'https://sms.tencentcloudapi.com'
+      // this.axios.post(url).then(result=>{
+        
+      // })
+      console.log('sendCode...')
+      let tel = `tel=${this.phone}`
+      this.axios.post('/checktelephone',tel).then(res=>{
+        console.log(res)
+      })
     },
   },
+  //验证手机验证码
+    registerSMS(){
+      this.axios.post('/checktelphone',code).then(res=>{
+      
+      })
+    }
 };
 </script>
 <style >
