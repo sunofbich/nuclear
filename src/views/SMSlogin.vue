@@ -36,7 +36,10 @@
               >获取验证码</router-link
             ></mt-button
           > -->
-          <mt-button class="btn1 sendCode1" size="small" @click.native="sendCode"
+          <mt-button
+            class="btn1 sendCode1"
+            size="small"
+            @click.native="sendCode"
             >获取验证码</mt-button
           >
         </mt-field>
@@ -47,7 +50,9 @@
         <!-- 密码 -->
         <!-- <mt-field style="background:transparent;padding-bottom:10px;color:black" id="inp" type="password" label="密码" placeholder="请输入密码" v-model="pwd" :state="pwdState" @blur.native.capture="checkPwd"></mt-field> -->
       </div>
-      <mt-button @click="registerSMS" class="dl" type="primary" size="large">注册并登陆</mt-button>
+      <mt-button @click.native="checkSMS" class="dl" type="primary" size="large"
+        >注册并登陆</mt-button
+      >
       <div class="bottombar">
         <!-- <router-link to="" class="changeBtn1" style="color:black">用户密码登录</router-link> -->
         <router-link to="/login" class="changeBtn1" style="color: black"
@@ -133,21 +138,78 @@ export default {
     sendCode() {
       // let rul = 'https://sms.tencentcloudapi.com'
       // this.axios.post(url).then(result=>{
-        
+
       // })
-      console.log('sendCode...')
-      let tel = `tel=${this.phone}`
-      this.axios.post('/checktelephone',tel).then(res=>{
-        console.log(res)
-      })
+      console.log("sendCode...");
+      let tel = `tel=${this.phone}`;
+      this.axios.post("/checktelephone", tel).then((res) => {
+        console.log(res);
+      });
+    },
+    //验证手机验证码
+    checkSMS() {
+      let SMS = `SMS=${this.message}`;
+      this.axios.post("/checkSMS", SMS).then((res) => {
+        console.log(res);
+        if (res.data.code == 200) {
+          // this.$toast({
+          //   message:'登陆成功',
+          //   position:'center',
+          //   duration:1000
+          // })
+          //注册成功，存入资料，已注册，默认不修改。
+          let url = "/register";
+          let param = `user_name=${this.phone}&pwd=${this.message}`;
+          this.axios.post(url, param).then((result) => {
+            console.log(result);
+            if (result.data.code == 200) {
+              this.$toast({
+                message: "注册并登陆成功",
+                position: "bottom",
+                duration: 2000,
+              });
+              //把用户信息存入sessionStorage,
+              let user = this.phone;
+              console.log(this.phone);
+              this.$store.commit("updateLoginState", user);
+              sessionStorage.setItem("islogin", 1);
+              sessionStorage.setItem("user", JSON.stringify(user));
+              //因为短信登陆需要跳转2次
+              this.$router.push(history.go(-2));
+            } else {
+              this.$toast({
+                message: "登陆成功",
+                position: "bottom",
+                duration: 2000,
+              });
+              //把用户信息存入sessionStorage,
+              let user = this.phone;
+              console.log(this.phone);
+              this.$store.commit("updateLoginState", user);
+              sessionStorage.setItem("islogin", 1);
+              sessionStorage.setItem("user", JSON.stringify(user));
+              //因为短信登陆需要跳转2次
+
+              this.$router.push(history.go(-2));
+            }
+          });
+
+          //把用户信息存入sessionStorage,
+          let user = this.phone;
+          console.log(this.phone);
+          this.$store.commit("updateLoginState", user);
+          sessionStorage.setItem("islogin", 1);
+          sessionStorage.setItem("user", JSON.stringify(user));
+        } else {
+          this.$toast({
+            message: "验证失败,请检查您的校验码",
+            position: "center",
+            duration: 3000,
+          });
+        }
+      });
     },
   },
-  //验证手机验证码
-    registerSMS(){
-      this.axios.post('/checktelphone',code).then(res=>{
-      
-      })
-    }
 };
 </script>
 <style >

@@ -1,16 +1,13 @@
 <template>
-  <div class="detail">
+  <div class="detail" style="margin: 40px 0 42px 0">
     <header>
       <!-- 详情页 固定布局页头 -->
       <div class="header-nav"></div>
       <!-- 头部图片位置 暂时用div代替-->
-      <div class="header-img" >
-        <img :src="this.detail.image" alt="">
+      <div class="header-img">
+        <img :src="this.detail.image" alt="" />
         <!-- <img :src="detail.image" alt=""> -->
-        
-        
       </div>
-        
     </header>
     <!-- 头部结束 -->
     <!--正文开始  -->
@@ -19,15 +16,14 @@
       <div class="nav clearfix">
         <div class="nav_img">
           <!-- 作者头像 待修改 -->
-          <img src="../assets/logo.png" alt class="n_img">
+          <img src="../assets/logo.png" alt class="n_img" />
         </div>
-        <span class="nav_s" >{{detail.created_at}}</span>
+        <span class="nav_s">{{ detail.created_at }}</span>
         <!-- <span class="nav_a">新浪/刚刚</span> -->
-       
-        <router-link to="#" class="nav_a">已订阅</router-link> 
-      
-        <button class="dz-button" @click='zan' >赞{{detail.dz_number}}</button>
 
+        <router-link to="#" class="nav_a">已订阅</router-link>
+
+        <button class="dz-button" @click="zan">赞{{ detail.dz_number }}</button>
       </div>
       <!-- 导航结束 -->
       <!-- 正文标题 -->
@@ -43,38 +39,57 @@
       <!-- 用户评论上半部分 -->
       <div class="comment_top">
         <div class="ctop_header">
-          <span class="c_title">全部评论</span>
-          <span class="c_count">{{comment.length}}</span>
+          <span class="c_title">热门评论</span>
+          <span class="c_count">{{ comment.length }}</span>
         </div>
         <div>
           <div>
-           
-            <table class="comment_user" 
-                   v-for="(item,i) in comment" :key="i">
-              <tr  class="user-top clearfix">
-                 <!-- 用户头像 -->
+            <table
+              class="comment_user"
+              
+              v-for="(item, i) in comment"
+              :key="i"
+            >
+              <tr class="user-top clearfix">
+                <!-- 用户头像 -->
                 <td rowspan="2" class="user-top-image">
-                  <!-- <img src="../assets/logo.png" alt> -->
+                  <img  src="user/头像.png" alt />
+
                   <!-- {{author.avatar}} -->
                 </td>
                 <!-- 用户名 -->
-                <td class="user-right  dz">
-                  <p>{{item.user_name}}</p>
+                <td class="user-right dz">
+                  <p>{{ item.user_name }}</p>
                 </td>
                 <!-- 点赞 -->
-                <td class="user-right dz">
-                
-                </td>
+                <td class="user-right dz"></td>
                 <!-- 点赞数量 -->
                 <td class="user-right dz">
-                    <button class="dz-button comment-dz" @click='zan' >赞{{detail.dz_number}}</button>
+                  <!-- <button class="dz-button comment-dz" @click="zan">
+                    赞{{ detail.dz_number }}
+                  </button> -->
+                  {{item.comment_at}}
                 </td>
               </tr>
               <tr>
                 <!-- <td></td> -->
                 <td colspan="3 ">
-                  <div>{{item.comment_content}}</div>
+                  <div class="content_list">{{ item.comment_content }}
+                    <div class='comment_menu'>
+                  <span @click="zan" ><img src="comment/心.png" alt="">{{ item.dz_comment }}</span>
+                  <span><img src="comment/评论.png" alt=""></span>
+                  <span><img src="comment/分享.png" alt=""></span>
+                  </div>
+
+                  </div>
                 </td>
+                <!-- <td>
+                  <div class='comment_menu'>
+                  <span><img src="comment/心.png" alt=""></span>
+                  <span><img src="comment/评论.png" alt=""></span>
+                  <span><img src="comment/分享.png" alt=""></span>
+                  </div>
+                </td> -->
               </tr>
             </table>
             <div>
@@ -106,8 +121,8 @@ export default {
       detail: {},
       // 评论
       comment: [],
-      flg:true,
-      author:{}
+      flg: true,
+      author: {},
     };
   },
   mounted() {
@@ -118,16 +133,16 @@ export default {
     // 声明URL为接口地址
     let url = `/detail?news_id=${id}`;
     //console.log(url);
-    this.axios.get(url).then(result => {
+    this.axios.get(url).then((result) => {
       //打印从服务器端返回的数据
-     // console.log(result);
+      // console.log(result);
       //把服务器返回的文章对象存入data
       this.detail = result.data.results;
-      let test=result.data.results;
+      let test = result.data.results;
       // console.log(test.image.slice(1,-1));
-      this.detail.image=test.image.slice(1,-1);
+      this.detail.image = test.image.slice(1, -1);
       //header头像
-      
+
       // this.detail.image = require(`${this.detail.image}`)
       // 处理一下时间  通过毫秒值时间戳  获取moment对象
       // let m = this.moment(detail.created_at);
@@ -136,74 +151,79 @@ export default {
       // dStr用于保存格式化后的时间字符串;
       // this.detail.createdStr = m.format("YYYY年MM月DD日");
       // moment(m,'MMMM DD YYYY');
-      
     });
     url = `/comment?news_id=${id}`;
-    this.axios.get(url).then(result => {
+    this.axios.get(url).then((result) => {
       //打印从服务器端返回的数据
-      //console.log(result);
-      //把服务器返回的文章对象存入data
-      this.comment = result.data.results;  
-      //评论头像
-     //this.comment.avatar = require(`${this.article.avatar}`)
-    
-    });
-    //获取作者信息
-      url = `/author?news_id=${id}`;
-    this.axios.get(url).then(result => {
-      //打印从服务器端返回的数据
-     // console.log(result);
-      //把服务器返回的文章对象存入data
-      this.author = result.data.author;  
-      //评论头像
-     //this.author.avatar = require(`${this.author.avatar}`)
-    
-    });
-    //获取点赞
-    url = `/?news_id=${id}`;
-    this.axios.get(url).then(result => {
-      //打印从服务器端返回的数据
-      //console.log(result);
+      console.log(result);
       //把服务器返回的文章对象存入data
       this.comment = result.data.results;
- 
+      //评论头像
+      //this.comment.avatar = require(`${this.article.avatar}`)
+      //处理时间
+      let time = result.data.results.comment_at
+      var moment = require('moment');
+      this.comment.comment_at=moment(time).format('MMMM Do YYYY, h:mm:ss a')
+      console.log(this.comment.comment_at)
     });
-  
+
+
+    //获取评论用户头型信息 路径可以拿到，但是记载不了
+    let user_id = this.comment.user_id;
+    url = `/avatar?user_id=${id}`;
+    this.axios.get(url).then((result) => {
+      //打印从服务器端返回的数据
+      //console.log(result);
+      //把服务器返回的文章对象存入data
+      //this.author = result.data.author;
+      //评论头像
+      this.comment.avatar = result.data.result[0].avatar.slice(1, -1);
+      //console.log(this.comment.avatar);
+      //this.author.avatar = require(`${this.author.avatar}`)
+    });
+    //获取点赞
+    // url = `/?news_id=${id}`;
+    // this.axios.get(url).then((result) => {
+    //   //打印从服务器端返回的数据
+    //   //console.log(result);
+    //   //把服务器返回的文章对象存入data
+    //   this.comment = result.data.results;
+    // });
   },
   methods: {
-      //点赞
-    zan: function(){
-      if(this.flg){
-        let num = this.detail.dz_number++;
-        let url = '/dz?news_id=${id}';
-        this.axios.post(url,num).then(result=>{
+    //点赞
+    zan: function () {
+      if (this.flg) {
+        let num = this.comment.dz_comment++;
+        let url = "/dz?news_id=${id}";
+        this.axios.post(url, num).then((result) => {
           //console.log(result);
-          if(result.data.code==200){
+          if (result.data.code == 200) {
             this.$toast({
-              message:'成功'
-            })
+              message: "成功",
+            });
           }
-        })
-
-      }else{
+        });
+      } else {
         this.detail.dz_number--;
         this.flg = true;
       }
     },
-   
-  }
-  
-}
-
+    // zan(){
+    //   let num =this.comment.dz_comment
+    //   this.comment.dz_comment=num++
+    // }
+  },
+};
 </script>
 
 <style scoped>
 /* 导航样式 */
-header{
+header {
   /* 设置上边距留出导航栏 */
   margin-top: 40px;
 }
-.header-img img{
+.header-img img {
   width: 100%;
   height: 160px;
 }
@@ -257,7 +277,7 @@ header{
   font-weight: bolder;
 }
 /* 点赞按钮的样式 */
-.dz-button{
+.dz-button {
   width: 70px;
   height: 22px;
   line-height: 22px;
@@ -267,9 +287,23 @@ header{
   color: orange;
   border: 1px solid orange;
   margin-right: 5px;
-  padding-bottom:2px; 
+  padding-bottom: 2px;
 }
-.comment-dz{
+/* 每个用户评论的内容 */
+.comment_user {
+  margin: 15px 3px;
+}
+/* 评论内容下边框 */
+/* .user-top clearfix{
+  border-bottom: 1px solid gray;
+} */
+.content_list {
+  /* padding-bottom: 38px; */
+  border-bottom: 1px solid gray;
+  position: relative;
+  /* margin-bottom: 20px; */
+}
+.comment-dz {
   color: #999;
   border: 1px solid #999;
 }
@@ -277,7 +311,7 @@ header{
 
 .content /deep/ p {
   font-size: 16px;
-  margin: 0 3% 15px 3%;
+  /* margin: 0 15px 15px 15px; */
   line-height: 20px;
   text-indent: 32px;
 }
@@ -294,10 +328,10 @@ header{
 }
 .user-top-image {
   /* height: 45px; */
-  width: 45px;
+  width: 30px;
   border-radius: 50%;
-  overflow: hidden;
-  padding-top:5px; 
+
+  padding-top: 5px;
   /* float: left; */
 }
 
@@ -310,7 +344,7 @@ header{
   width: 100%;
 }
 .c_title {
-  font-size: 28px;
+  font-size: 18px;
   font-weight: bold;
   color: black;
 }
@@ -327,11 +361,22 @@ header{
 /**********************************************/
 
 /* 点赞部分 */
-table{
+table {
   width: 80%;
 }
-.dz{
+.dz {
   width: 28%;
+}
+.comment_ment{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.comment_menu /deep/ img{
+  width: 20px;
+  /* display: block; */
+  /* float: right; */
+  margin:10px 2px 0 0 ;
 }
 </style>
 

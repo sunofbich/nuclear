@@ -162,7 +162,7 @@ export default {
         checkForm(){
             if(this.checkUsername()&&this.checkPwd()&&this.checkRepwd()){
                 let url='/register'
-                let param=`username=${this.username}&password=${this.pwd}`;
+                let param=`user_name=${this.username}&pwd=${this.pwd}`;
                 this.axios.post(url,param).then(result=>{
                     console.log(result);
                     if(result.data.code==200){

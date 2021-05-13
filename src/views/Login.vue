@@ -21,7 +21,7 @@
           style="background: transparent; padding-bottom: 10px; color: black"
           id="inp"
           type="text"
-          label="用户名"
+          label="用户名/手机"
           placeholder="请输入用户名"
           :state="usernameState"
           v-model="username"
@@ -39,7 +39,16 @@
           @blur.native.capture="checkPwd"
         ></mt-field>
       </div>
-      <mt-button
+
+      <!-- qq登陆按钮 -->
+      <!-- <span id="login_btn_modal"><img src="qqbt.png" alt="" /></span> -->
+      <a style="margin-left:50px" href="#" @click="toLogin"> <img src="qqbt.png" alt="" /></a>
+
+      <!-- wb登陆按钮 -->
+      <wb:login-button style="margin-left:90px" type="3,2" onlogin="login" onlogout="logout"
+        >登录按钮</wb:login-button
+      >
+      <mt-button style="margin-top:15px"
         id="loginbtn"
         class="dl"
         type="primary"
@@ -59,6 +68,26 @@
     </div>
   </div>
 </template>
+
+
+
+    <script type="text/javascript"  charset="utf-8"
+    src="http://connect.qq.com/qc_jssdk.js"
+    data-appid="101946835"
+    data-redirecturi="http://npfive.cn/login"
+></script>
+
+
+ <script type="text/javascript">
+//qq互联
+QC.Login({
+  btnId: "qqLoginBtn", //插入按钮的节点id
+});
+</script>
+
+
+
+
 <script>
 export default {
   data() {
@@ -100,11 +129,24 @@ export default {
         return false;
       }
     },
+    toLogin() {
+      //以下为按钮点击事件的逻辑。注意这里要重新打开窗口
+      //否则后面跳转到QQ登录，授权页面时会直接缩小当前浏览器的窗口，而不是打开新窗口
+      var A = window.open(
+        "oauth/index.php",
+        "TencentLogin",
+        "width=450,height=320,menubar=0,scrollbars=1,resizable=1,status=1,titlebar=0,toolbar=0,location=1"
+      );
+    },
+
+    //qq登陆
+    //loginQQ() {},
 
     checkForm() {
       if (this.checkUsername() && this.checkPwd()) {
         let url = "/login";
         let param = `user_name=${this.username}&upwd=${this.pwd}`;
+        console.log(param)
         this.axios.post(url, param).then((result) => {
           console.log(result);
           if (result.data.code == 200) {
@@ -114,19 +156,20 @@ export default {
               duration: 1000,
             });
             let user = result.data.result;
+            console.log(user)
             this.$store.commit("updateLoginState", user);
             //把用户信息存入sessionStorage,
             sessionStorage.setItem("islogin", 1);
             sessionStorage.setItem("user", JSON.stringify(user));
             this.$router.push(history.go(-1));
           } else {
-            this.$messagebox("提示信息", "账号密码输入错误");
+            this.$messagebox("提示信息", "用户名或密码输入错误");
           }
         });
       } else {
+        console.log('s哈也不是')
       }
     },
-
   },
 };
 </script>
@@ -174,7 +217,7 @@ export default {
 }
 #loginbtn.dl {
   margin-bottom: 50px !important;
-  margin: 0 auto;
+  margin: 5px auto;
   width: 200px !important;
 }
 .changeBtn1 {
