@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "build": "^0.1.4",
     "core-js": "^3.6.5",
+    "express-session": "^1.17.1",
     "mint-ui": "^2.2.13",
     "moment": "^2.29.1",
     "tencentcloud-sdk-nodejs": "^4.0.114",

@@ -102,19 +102,20 @@
         </div>
       </div>
       <!-- 推荐选项结束 -->
-      <!-- 推荐新闻开始 -->
+      <!-- 底部新闻开始 -->
       <div class="recommend_news">
-        <div>
+        <div v-for="(item,index) in result" :key="index">
           <div class="recommend_news_pic">
-            <img src="../assets/home/tuijian1.jpg" alt="" />
+            <img @click="getdata" :src="item.image" alt="" :data-path="item.path"/>
           </div>
-          <h3 style="margin-bottom: 3px">习近平出席舰艇交接活动</h3>
+          <h3 style="margin-bottom: 3px">{{item.title.slice(0,14)}}</h3>
           <h1>
-            <span style="float: left; color: red">2021-4-25</span
-            ><span style="float: right">来源:新华社</span>
+            <span style="float: left; color: red">{{item.passtime}}</span>
+            <span style="float: right;display:none">来源:新华社</span>
           </h1>
         </div>
-        <div>
+        <!-- <button @click="getdata"></button> -->
+        <!-- <div>
           <div class="recommend_news_pic">
             <img src="../assets/home/tuijian2.jpg" alt="" />
           </div>
@@ -123,8 +124,8 @@
             <span style="float: left; color: red">2021-4-26</span
             ><span style="float: right">来源:今日中国</span>
           </h1>
-        </div>
-        <div>
+        </div> -->
+        <!-- <div>
           <div class="recommend_news_pic">
             <img src="../assets/home/tuijian3.png" alt="" />
           </div>
@@ -133,8 +134,8 @@
             <span style="float: left; color: red">2021-4-16</span
             ><span style="float: right">来源:今日中国</span>
           </h1>
-        </div>
-        <div>
+        </div> -->
+        <!-- <div>
           <div class="recommend_news_pic">
             <img src="../assets/home/tuijian4.jpg" alt="" />
           </div>
@@ -144,10 +145,11 @@
             ><span style="float: right">来源:央视客户端</span>
           </h1>
           
-        </div>
-        <span style="margin:8px 0 3px 0"><a href="http://www.beian.gov.cn/">京ICP备2021014196号-1</a></span>
+        </div> -->
+        <span style="margin:8px 0 3px 0"><a href="http://www.beian.gov.cn/">京ICP备2021014196号-1</a>
+        </span>
       </div>  
-      <!-- 推荐新闻结束 -->
+      <!-- 底部新闻结束 -->
       
     </div>
   </div>
@@ -157,10 +159,16 @@ export default {
   data() {
     return {
       h: "200px",
-      
+      result:[],
     };
   },
   methods: {
+    // 点击事件，获取点击到的底部新闻地址，实现页面跳转
+    getdata(e){
+      console.log(event.target.dataset.path);
+      // 跳转到页面
+      window.location.href=event.target.dataset.path;
+    },
     initSwipe() {
       let picwidth = 1242;
       let picheight = 698;
@@ -173,6 +181,17 @@ export default {
   },
   mounted() {
     this.initSwipe();
+    // 发送axios请求，获取底部新闻信息
+    this.axios({
+      url:'https://api.apiopen.top/getWangYiNews',
+      method:'GET'
+      }).then((res)=>{
+          // console.log(res);
+          // 将返回值存入data中的result
+          this.result=res.data.result;
+          
+      }
+    )
   },
   
 };

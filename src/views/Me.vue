@@ -9,23 +9,24 @@
         </div>
 
         <div class="user_btn">
-          
-          <span v-if="this.$store.state.islogin == 0" ><router-link  to="/login" style="color:white" >立即登录</router-link></span>
+          <span v-if="this.$store.state.islogin == 0"
+            ><router-link to="/login" style="color: white"
+              >立即登录</router-link
+            ></span
+          >
           <span v-else>{{ this.$store.state.user.user_name }}</span>
-          
         </div>
       </div>
     </div>
     <div class="body">
-      <div class="body-item msg"><i class="icon"></i><span>我的消息</span></div>
-      <div class="body-item favor">
-        <i class="icon"></i><span>我的收藏</span>
-      </div>
-      <div class="body-item dz"><i class="icon"></i><span>我的点赞</span></div>
-      <div class="body-item ls"><i class="icon"></i><span>历史记录</span></div>
-      <div class="body-item logout">
-        <i class="icon"></i><span @click="logout">退出登录</span>
-      </div>
+      <mt-cell title="我的消息"  is-link ></mt-cell>
+      <mt-cell title="我的关注" to="/follows" is-link></mt-cell>
+      <mt-cell title="我的点赞" to="/likes" is-link ></mt-cell>
+      <mt-cell title="历史记录" to="/history" is-link ></mt-cell>
+      <mt-cell title="其他设置"  is-link ></mt-cell>
+      <span  @click="logout">
+      <mt-cell  title="退出登录"  ></mt-cell>
+      </span>
     </div>
 
     <!-- 底部选项卡 -->
@@ -60,6 +61,12 @@ export default {
   methods: {
     logout() {
       this.$store.state.islogin = 0;
+       this.$toast({
+              message: "您已退出登录",
+              position: "center",
+              duration: 2000,
+            });
+
     },
   },
   //监听底部选项卡,用于跳转主页以及me

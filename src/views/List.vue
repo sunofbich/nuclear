@@ -20,7 +20,7 @@
     >
       <mt-tab-container-item>
         <!-- 单一文章信息开始 -->
-        <div class="articleItem" v-for="(item, i) in articles" :key="i">
+        <div class="articleItem" v-for="(item, i) in articles" :key="i" >
           <router-link :to="`/detail?news_id=${item.news_id}`">
             <!-- 文章标题开始 -->
             <div class="articleItem-header">{{ item.title }}</div>
@@ -100,6 +100,7 @@ export default {
     };
   },
   methods: {
+
     // 异步加载文章列表  通过callback执行回调
     loadArticles(cid, page, callback) {
       let url = `/list?cid=${cid}&page=${page}`;

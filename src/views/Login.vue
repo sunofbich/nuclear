@@ -158,6 +158,8 @@ export default {
             let user = result.data.result;
             console.log(user)
             this.$store.commit("updateLoginState", user);
+            this.$store.commit('changeDataMut',user.user_id)
+            this
             //把用户信息存入sessionStorage,
             sessionStorage.setItem("islogin", 1);
             sessionStorage.setItem("user", JSON.stringify(user));
