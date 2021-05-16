@@ -22,14 +22,16 @@
         <!-- <span class="nav_a">{{detail.author_name}}</span> -->
 
         <button @click="follow" class="nav_a">
-          <span>已订阅</span>   
+          <span v-if="following == 1">已订阅</span>
+          <span v-else>订阅</span>
           <!-- <span>订阅</span>    -->
-          </button>
+        </button>
         <!-- <router-link to="#" @click="follow" class="nav_a">已订阅</router-link> -->
 
-       <span v-model="dznumber" class="dz-button">
-         <img width="20px"  @click="zan" src="comment/点赞1.png" alt="">
-         {{ this.dznumber }}</span>
+        <span v-model="dznumber" class="dz-button">
+          <img width="20px" @click="zan" src="comment/点赞1.png" alt="" />
+          {{ this.dznumber }}</span
+        >
       </div>
       <!-- 导航结束 -->
       <!-- 正文标题 -->
@@ -52,7 +54,7 @@
         <!-- 评论 -->
         <div class="addComment">
           <div>
-          <input v-model="add_comment" type="text" />
+            <input v-model="add_comment" type="text" />
           </div>
           <div>
             <button @click="addComment">提交</button>
@@ -88,26 +90,44 @@
                 <td colspan="3 ">
                   <div class="content_list">
                     {{ item.comment_content }}
-                    
+
                     <div class="comment_menu">
                       <span>
-                        <img  @click="love" :data-id="item.comment_id" v-if="xin == true" src="comment/心1.png" alt="" />
-                        <img  @click="love" :data-id="item.comment_id" v-else src="comment/心.png" alt="" />
+                        <img
+                          @click="love"
+                          :data-id="item.comment_id"
+                          v-if="xin == true"
+                          src="comment/心1.png"
+                          alt=""
+                        />
+                        <img
+                          @click="love"
+                          :data-id="item.comment_id"
+                          v-else
+                          src="comment/心.png"
+                          alt=""
+                        />
 
                         {{ item.dz_comment }}</span
                       >
-                      <span  ><img @click="addreply" :data-id="item.comment_id" src="comment/评论.png" alt="" /></span>
+                      <span
+                        ><img
+                          @click="addreply"
+                          :data-id="item.comment_id"
+                          src="comment/评论.png"
+                          alt=""
+                      /></span>
                       <span><img src="comment/分享.png" alt="" /></span>
                     </div>
                   </div>
-                       <div>
-                      <p>{{item.reply_text}}</p>
+                  <div>
+                    <p>{{ item.reply_text }}</p>
                   </div>
                 </td>
               </tr>
             </table>
-            <div style="text-align:center;width:124px;margin:0 auto;"></div>
-                 <!-- <span><router-link   to="/morecomment">点击查看更多评...</router-link></span> -->
+            <div style="text-align: center; width: 124px; margin: 0 auto"></div>
+            <!-- <span><router-link   to="/morecomment">点击查看更多评...</router-link></span> -->
           </div>
         </div>
       </div>
@@ -117,6 +137,9 @@
 
 
 <script>
+import { get } from "../utils/request";
+import { post } from "../utils/request";
+import { del } from "../utils/request";
 export default {
   data() {
     return {
@@ -128,261 +151,193 @@ export default {
       author: {},
       xin: false,
       title: "",
-      add_comment:'',
-      dznumber:'',
-      comment_id:-1
+      add_comment: "",
+      dznumber: "",
+      comment_id: -1,
+      following: 0,
     };
   },
   mounted() {
-
-   
-    // //验证是否关注
-    // this.axios
-    //   .get(`/getfollows?user_id=${this.$store.state.user.user_id}`)
-    //   .then((result) => {
-    //     console.log(result);
-    //     this.follows = result.data.result;
-    //   });
-
+    //调用封装的get请求
     // 获取新闻id
-    let id = this.$route.query.news_id;
-    //打印新闻id
-    console.log(id);
+    var nid = this.$route.query.news_id;
+    //获取用户id
+    var uid = this.$store.state.user.user_id;
     // 声明URL为接口地址
-    let url = `/getdetail?news_id=${id}`;
-    //console.log(url);
-    this.axios.get(url).then((result) => {
-      //打印从服务器端返回的数据
+    let url = `/getdetail?news_id=${nid}`;
+    get(url).then((result) => {
       console.log(result);
-
       //把服务器返回的文章对象存入data
       this.detail = result.data.results;
-      //console.log(this.detail)
       //因从服务器获取数据 有多余符号，特此处理
       let err = result.data.results;
-      // // console.log(test.image.slice(1,-1));
       this.detail.image = err.image.slice(1, -1);
       this.detail.author_avatar = err.author_avatar.slice(1, -1);
-      //header头像
-      this.dznumber=result.data.results.dz_number
-      //存储title
+      this.dznumber = result.data.results.dz_number;
       this.title = result.data.results.title;
-    //    //获得回复
-    //  let url=`/getreply?cpmment_id=${this.comment_id}`
-    //  this.axios.get(url).then((result) => {
-    //   //打印从服务器端返回的数据
-    //   console.log(result);
-    //   this.reply=result.data.result
-      
-    // })
-      
-
-      // this.detail.image = require(`${this.detail.image}`)
-      // 处理一下时间  通过毫秒值时间戳  获取moment对象
-      // let m = this.moment(detail.created_at);
-      // console.log(`11111${m}`)
-      // 新增属性create
-      // dStr用于保存格式化后的时间字符串;
-      // this.detail.createdStr = m.format("YYYY年MM月DD日");
-      // moment(m,'MMMM DD YYYY');
-
-      //添加历史记录
-      let time = this.$moment().format('YYYY-MM-DD HH:mm:ss')
-      if(this.$store.state.islogin==1){
-         let param = `user_id=${this.$store.state.user.user_id}&title=${this.title}&history_time=${time}&news_id=${this.$route.query.news_id}`;
-      // console.log(param);
-      this.axios.post("/history", param).then((result) => {
-        // console.log(result);
-      });
+      //添加用户历史记录
+      let time = this.$moment().format("YYYY-MM-DD HH:mm:ss");
+      //判断是否登录
+      if (this.$store.state.islogin == 1) {
+        let param = `user_id=${uid}&title=${this.title}&history_time=${time}&news_id=${nid}`;
+        this.axios.post("/history", param).then((result) => {});
       }
+      //判断当前用户是否已经关注
+      get(
+        `/getfollow?user_id=${uid}&author_id=${result.data.results.author_id}`
+      ).then((result) => {
+        console.log(result);
+        if (result.data.result.length == 0) {
+          //更新订阅状态
+          this.following = 0;
+        } else {
+          this.following = 1;
+        }
+      });
     });
-    //获得评论内容
-    url = `/comment?news_id=${id}`;
-    this.axios.get(url).then((result) => {
-      //打印从服务器端返回的数据
-      console.log(result);
 
-      //获取评论用户头型信息 路径可以拿到，但是记载不了
-      let user_id = result.data.results.user_id;
-      let a = result.data.results;
-      // url = `/avatar?user_id=${id}`;
-      // this.axios.get(url).then((result) => {
-      //   //打印从服务器端返回的数据
-      //   console.log(result);
-      //   this.comment=a
-      //   this.comment.avatar=result.data.result.avatar
-      //   console.log(this.comment)
-      //   //把服务器返回的文章对象存入data
-      //   //this.author = result.data.author;
-      //   //评论头像
-      //   this.comment.avatar = result.data.result.avatar
-      //   console.log(this.comment.avatar);
-      //   //this.author.avatar = require(`${this.author.avatar}`)
-      // });
-
+    //获得当前新闻评论内容
+    url = `/comment?news_id=${nid}`;
+    get(url).then((result) => {
       //把服务器返回的文章对象存入data
       this.comment = result.data.results;
-      //评论头像
-      //console.log(this.comment)
-      //this.comment.avatar = require(`${this.article.avatar}`)
-      //处理时间
+      //处理评论的时间
+      //获取评论的时间
       let time = result.data.results.comment_at;
-      var moment = require("moment");
+      //时间函数
+      let moment = require("moment");
+      //获取当前时间
       this.comment.comment_at = moment(time).format("MMMM Do YYYY, h:mm:ss a");
-      //console.log(this.comment.comment_at)
     });
-
-    // //获取评论用户头型信息 路径可以拿到，但是记载不了
-    //  user_id = this.comment.user_id;
-    // url = `/avatar?user_id=${id}`;
-    // this.axios.get(url).then((result) => {
-    //   //打印从服务器端返回的数据
-    //   //console.log(result);
-    //   //把服务器返回的文章对象存入data
-    //   //this.author = result.data.author;
-    //   //评论头像
-    //   this.comment.avatar = result.data.result[0].avatar.slice(1, -1);
-    //   //console.log(this.comment.avatar);
-    //   //this.author.avatar = require(`${this.author.avatar}`)
-    // });
-    //获取点赞
-    // url = `/?news_id=${id}`;
-    // this.axios.get(url).then((result) => {
-    //   //打印从服务器端返回的数据
-    //   //console.log(result);
-    //   //把服务器返回的文章对象存入data
-    //   this.comment = result.data.results;
-    // });
   },
   methods: {
     //回复评论
-    addreply(e){
-      if(this.$store.state.islogin==1){
-      this.$messagebox.prompt('回复评论').then(({ value, action }) => {
-        // console.log(value)
-        
-      // console.log(e.target.dataset.id)
-      this.comment_id=e.target.dataset.id
-      // let param=`user_id=${this.$store.state.user.user_id}&`
-      let param=`reply_text=${value}&user_id=${this.$store.state.user.user_id}&comment_id=${this.comment_id}`
-
-      this.axios.post('/addreply',param).then((result)=>{
-        // console.log(result)
-        if (result.data.code == 200) {
-            this.$toast({
-              message: "回复成功",
-              position: "center",
-              duration: 1000,
-            });
-            // this.result.
-          }
-      })
-  });
-
-      }else{
+    addreply(e) {
+      // 获取新闻id
+      //获取用户id
+      var uid = this.$store.state.user.user_id;
+      if (this.$store.state.islogin == 1) {
+        //mintui盒子
+        this.$messagebox.prompt("回复评论").then(({ value, action }) => {
+          this.comment_id = e.target.dataset.id;
+          let param = `reply_text=${value}&user_id=${uid}&comment_id=${this.comment_id}`;
+          post("/addreply", param).then((result) => {
+            if (result.data.code == 200) {
+              this.$toast({
+                message: "回复成功",
+                position: "center",
+                duration: 1000,
+              });
+            }
+          });
+        });
+      } else {
         this.$toast({
-              message: "请先进行登录",
-              position: "center",
-              duration: 2000,
-            });
+          message: "请先进行登录",
+          position: "center",
+          duration: 2000,
+        });
       }
-      
     },
-    //写评论
+
+    //添加新闻评论
     addComment() {
-      // MessageBox.prompt('Please tell me your name').then(({ value, action }) => {
-      //     console.log(value)
-      //     console.log(action)
-      // });
-      if(this.$store.state.islogin==1){
-        let time = this.$moment().format('YYYY-MM-DD HH:mm:ss')
-      let num = 0
-      let param=`user_id=${this.$store.state.user.user_id}&news_id=${this.$route.query.news_id}&comment_content=${this.add_comment}&user_name=${this.$store.state.user.user_name}&dz_comment=${num}&comment_at=${time}`;
-      this.axios.post('comment',param).then((result)=>{
-        // console.log(result)
+      // 获取新闻id
+      var nid = this.$route.query.news_id;
+      //获取用户id
+      var uid = this.$store.state.user.user_id;
+      if (this.$store.state.islogin == 1) {
+        let time = this.$moment().format("YYYY-MM-DD HH:mm:ss");
+        let num = 0;
+        let param = `user_id=${uid}&news_id=${nid}&comment_content=${this.add_comment}&user_name=${this.$store.state.user.user_name}&dz_comment=${num}&comment_at=${time}`;
+        post("comment", param).then((result) => {
           if (result.data.code == 200) {
             this.$toast({
               message: "登录成功",
               position: "center",
               duration: 1000,
             });
-          }else{
+          } else {
             this.$toast({
               message: "网络不是法外之地！",
               position: "center",
               duration: 1000,
             });
           }
-      
-      })
-      this.add_comment=''
-      }else{
-         this.$toast({
-              message: "请先登录！",
-              position: "center",
-              duration: 2000,
-            });
+        });
+        this.add_comment = "";
+      } else {
+        this.$toast({
+          message: "请先登录！",
+          position: "center",
+          duration: 2000,
+        });
       }
-      
     },
-    //添加历史浏览记录
-    user_like() {},
-    //aixin
-    //存储用户点赞
+
     love(e) {
       // console.log(this.title)
       // this.xin=true,
-    
       // e.srcElement.dataset.item ==  true ? false : true;
     },
-    //文章点赞
+
+    //记录新闻点赞点赞
     zan() {
-      // console.log(this.dznumber)
-      // detail.dz_number
-      // console.log(detail.dz_number)
-      this.dznumber++
-      // console.log(this.dznumber)
-      let param = `news_id=${this.$route.query.news_id}&dz_number=${this.dznumber}`
-      this.axios.post('/good',param).then((result)=>{
-        // console.log(result)
-      })
-      // let param = `user_id=${this.$store.state.user.user_id}&dz_comment=${this.dzcomment}`;
-      // this.axios.post("/adddz", param).then((result) => {
-      //   console.log(result);
-      // });
+      // 获取新闻id
+      var nid = this.$route.query.news_id;
+      //获取用户id
+      var uid = this.$store.state.user.user_id;
+      this.dznumber++;
+      let param = `news_id=${nid}&dz_number=${this.dznumber}`;
+      post("/good", param).then((result) => {});
     },
 
     //关注新闻网站
+
     follow() {
-      // console.log(this.detail.author_name);
-      let id = this.$route.query.news_id;
-      let param = `user_id=${this.$store.state.user.user_id}&author_name=${this.detail.author_name}&news_id=${id}&author_avatar=${this.detail.author_avatar}`;
-      // console.log(param);
-      this.axios.post("/follows", param).then((result) => {
-        // console.log(result);
-      });
+      //获取用户id
+      let uid = this.$store.state.user.user_id;
+      let aid = this.detail.author_id;
+      //判断登录状态
+      if (this.$store.state.islogin == 1) {
+        //判断当前用户是否已经关注
+        get(`/getfollow?user_id=${uid}&author_id=${aid}`).then((result) => {
+          console.log(result);
+          if (result.data.result.length == 0) {
+            //更新订阅状态
+            this.following = 1;
+            //存储关注新闻id及用户id
+            let param = `user_id=${uid}&author_name=${this.detail.author_name}&author_id=${this.detail.author_id}&author_avatar=${this.detail.author_avatar}`;
+            post("/follows", param).then((result) => {
+              if (result.data.code == 200) {
+                this.$toast({
+                  message: "订阅成功",
+                  position: "center",
+                  duration: 1000,
+                });
+              }
+            });
+          } else {
+            this.following = 0;
+            del(`/dfollows?user_id=${uid}&author_id=${aid}`).then((result) => {
+              if (result.data.code == 200) {
+                this.$toast({
+                  message: "已取消订阅",
+                  position: "center",
+                  duration: 1000,
+                });
+              }
+            });
+          }
+        });
+      } else {
+        this.$toast({
+          message: "先登录才可以订阅哦!",
+          position: "center",
+          duration: 2000,
+        });
+      }
     },
-    // zan: function () {
-    //   if (this.flg) {
-    //     let num = this.comment.dz_comment++;
-    //     let url = "/dz?news_id=${id}";
-    //     this.axios.post(url, num).then((result) => {
-    //       //console.log(result);
-    //       if (result.data.code == 200) {
-    //         this.$toast({
-    //           message: "成功",
-    //         });
-    //       }
-    //     });
-    //   } else {
-    //     this.detail.dz_number--;
-    //     this.flg = true;
-    //   }
-    // },
-    // zan(){
-    //   let num =this.comment.dz_comment
-    //   this.comment.dz_comment=num++
-    // }
   },
 };
 </script>
@@ -494,7 +449,6 @@ header {
   height: 160px;
   margin: 0 auto;
   text-align: center;
-
 }
 
 /* 评论部分 */
@@ -575,15 +529,15 @@ table {
   font-size: 9px;
   margin: 5px;
 }
-.addComment input{
-width: 80%;
-line-height: 30px;
+.addComment input {
+  width: 80%;
+  line-height: 30px;
 }
-.addComment{
+.addComment {
   text-align: center;
-  margin-top:10px ;
+  margin-top: 10px;
 }
-.addComment button{
+.addComment button {
   position: absolute;
   right: 30px;
   margin-top: 10px;

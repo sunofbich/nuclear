@@ -19,6 +19,8 @@
 
 
 <script>
+import { get } from "../utils/request";
+import { del } from "../utils/request";
 export default {
   data() {
     return {
@@ -28,8 +30,7 @@ export default {
   methods: {
     //清空历史浏览记录
     clear_history() {
-      this.axios
-        .get(`/clhistory?user_id=${this.$store.state.user.user_id}`)
+      del(`/clhistory?user_id=${this.$store.state.user.user_id}`)
         .then((result) => {
           console.log(result);
           if (result.data.code == 200) {
@@ -48,8 +49,7 @@ export default {
     //获取用户浏览记录
     //  url = `/gethistory?user_id=${this.$route.query.news_id}`;
 
-    this.axios
-      .get(`/gethistory?user_id=${this.$store.state.user.user_id}`)
+    get(`/gethistory?user_id=${this.$store.state.user.user_id}`)
       .then((result) => {
         console.log(result);
         this.history = result.data.result;

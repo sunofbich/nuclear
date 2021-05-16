@@ -11,12 +11,12 @@
       <div class="list_item" style="height:50px">
        <div class="author_avatar">
          <!-- 图片路径是动态值 -->
-        <img src="" alt="">
+        <img :src="item.author_avatar" alt="">
        </div>
        <div>
         <span class="item" style="margin-left:5px">{{item.author_name}}</span>
        </div>
-       <button>取消关注</button>
+       <button @click="dfollow" :data-id='item.author_id'>取消关注</button>
       </div>
     </div>
     <!-- 收藏列表渲染结束 -->
@@ -24,6 +24,10 @@
 </template>
 
 <script>
+import { get } from "../utils/request";
+import { post } from "../utils/request";
+import { del } from "../utils/request";
+
 export default {
   data() {
     return {
@@ -31,17 +35,30 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$store.state.user.user_id);
     //获取关注的媒体
-    //  url = `/gethistory?user_id=${this.$route.query.news_id}`;
-
-    this.axios
-      .get(`/getfollows?user_id=${this.$store.state.user.user_id}`)
+    get(`/getfollows?user_id=${this.$store.state.user.user_id}`)
       .then((result) => {
         console.log(result);
         this.follows = result.data.result;
       });
   },
+  methods:{
+    //取消关注
+    dfollow(e){
+      let uid = this.$store.state.user.user_id;
+      let auhtor_id = e.target.dataset.id;
+      del(`/dfollows?user_id=${uid}&author_id=${auhtor_id}`).then((result)=>{
+        if (result.data.code == 200) {
+              this.$toast({
+                message: "已取消关注",
+                position: "center",
+                duration: 1000,
+              });
+            }
+      })
+
+    }
+  }
 };
 </script>
 
